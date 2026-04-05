@@ -115,8 +115,8 @@ export function CompareDemo() {
   return (
     <div className="w-full border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800">
       <Compare
-        firstImage="https://res.cloudinary.com/dh66ghzeq/image/upload/v1756103247/U2NyZWVuc2hvdF8yMDI1LTA4LTI1XzExNTIzMV9hdGdqano="
-        secondImage="https://voocgavdbpy2gucg.public.blob.vercel-storage.com/portfolio/image%20%284%29-Z38KH4uoJOoyhY6YDXVDNxRu8uWZUS.png"
+        firstImage="https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=1200&q=80"
+        secondImage="https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&q=80"
         firstImageClassName="object-cover object-left-top"
         secondImageClassname="object-cover object-left-top"
         className="h-[200px] sm:h-[250px] md:h-[400px] lg:h-[500px] w-full"
