@@ -151,7 +151,7 @@ export const Compare = ({
   return (
     <div
       ref={sliderRef}
-      className={cn("w-[400px] h-[400px] overflow-hidden", className)}
+      className={cn("w-[400px] h-[400px] overflow-hidden rounded-2xl", className)}
       style={{
         position: "relative",
         cursor: slideMode === "drag" ? "grab" : "col-resize",
@@ -198,10 +198,7 @@ export const Compare = ({
         <AnimatePresence initial={false}>
           {firstImage ? (
             <motion.div
-              className={cn(
-                "absolute inset-0 z-20 rounded-2xl shrink-0 w-full h-full select-none overflow-hidden",
-                firstImageClassName
-              )}
+              className="absolute inset-0 z-20 rounded-2xl shrink-0 w-full h-full select-none overflow-hidden"
               style={{
                 clipPath: `inset(0 ${100 - sliderXPercent}% 0 0)`,
               }}
@@ -211,7 +208,7 @@ export const Compare = ({
                 alt="first image"
                 src={firstImage}
                 className={cn(
-                  "absolute inset-0 z-20 rounded-2xl shrink-0 w-full h-full select-none object-cover object-left-top",
+                  "absolute inset-0 z-20 shrink-0 w-full h-full select-none object-cover object-left-top",
                   firstImageClassName
                 )}
                 draggable={false}
@@ -225,7 +222,7 @@ export const Compare = ({
         {secondImage ? (
           <motion.img
             className={cn(
-              "absolute top-0 left-0 z-[19] rounded-2xl w-full h-full select-none object-cover object-left-top",
+              "absolute top-0 left-0 z-[19] w-full h-full select-none object-cover object-left-top",
               secondImageClassname
             )}
             alt="second image"
