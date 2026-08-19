@@ -190,38 +190,7 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
       </div>
     ),
   },
-  {
-    title: "JUNE 2026 GRADUATED BTECH",
-    content: (
-      <div>
-        <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-base font-normal mb-8">
-          Completed my BTech (IT) degree, closing out four years of learning,
-          building, and shipping real projects. <br />
-          From writing my first line of HTML to designing AI agents in
-          production, this milestone marks the foundation for everything
-          that&apos;s next.
-        </p>
-
-        <div className="mb-8">
-          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
-            🎓 Graduated BTech in Information Technology
-          </div>
-          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
-            ✅ Built and shipped 15+ full-stack and AI projects during the
-            degree
-          </div>
-          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
-            ✅ Gained hands-on industry experience as a key contributor at
-            Digital Fortress
-          </div>
-          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
-            ✅ Strengthened core CS fundamentals alongside applied
-            engineering work
-          </div>
-        </div>
-      </div>
-    ),
-  },
+ 
   {
     title: "2026 BUILDING THE NEXT CHAPTER",
     content: (
@@ -263,6 +232,38 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
+        </div>
+      </div>
+    ),
+  },
+   {
+    title: "JUNE 2026 GRADUATED BTECH",
+    content: (
+      <div>
+        <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-base font-normal mb-8">
+          Completed my BTech (IT) degree, closing out four years of learning,
+          building, and shipping real projects. <br />
+          From writing my first line of HTML to designing AI agents in
+          production, this milestone marks the foundation for everything
+          that&apos;s next.
+        </p>
+
+        <div className="mb-8">
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            🎓 Graduated BTech in Information Technology
+          </div>
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            ✅ Built and shipped 15+ full-stack and AI projects during the
+            degree
+          </div>
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            ✅ Gained hands-on industry experience as a key contributor at
+            Digital Fortress
+          </div>
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            ✅ Strengthened core CS fundamentals alongside applied
+            engineering work
+          </div>
         </div>
       </div>
     ),
