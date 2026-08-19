@@ -16,8 +16,7 @@ const nextConfig: NextConfig = {
       { hostname: "res-console.cloudinary.com" },
       { hostname: "voocgavdbpy2gucg.public.blob.vercel-storage.com" },
       { hostname: "cdn.simpleicons.org" },
-      // Added for auto-generated project screenshots (no local uploads needed)
-      { hostname: "image.thum.io" },
+      // GitHub's hosted repo preview card — reliable, consistent aesthetic, no upload needed
       { hostname: "opengraph.githubassets.com" },
     ],
   },
