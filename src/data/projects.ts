@@ -2,7 +2,7 @@ export const PROJECTS = [
   {
     category: "Portfolio Website",
     title: "Portfolio",
-    src: "/images/mockup/portfolio.png",
+    src: "/images/mockup/portfolio_mockup.png",
     techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     githubLink: "https://github.com/Jashan-randhawa/Portfolio",
     liveLink: "https://jashan2978.vercel.app",
@@ -12,7 +12,7 @@ export const PROJECTS = [
   {
     category: "Artificial Intelligence",
     title: "AI Fitness Tracker",
-    src: "/images/mockup/ai-fitness-tracker.png",
+    src: "/images/mockup/ai-fitness-tracker_mockup.png",
     techStack: ["React", "Strapi", "Gemini AI", "TypeScript"],
     githubLink: "https://github.com/Jashan-randhawa/AI-FitnessTracker1",
     liveLink: "https://ai-fitness-tracker1.vercel.app",
@@ -22,7 +22,7 @@ export const PROJECTS = [
   {
     category: "Automation",
     title: "Job Mail Automation",
-    src: "/images/mockup/job-mail-automation.png",
+    src: "/images/mockup/job-mail-automation_mockup.png",
     techStack: ["JavaScript", "Node.js", "OpenRouter", "Gmail SMTP"],
     githubLink: "https://github.com/Jashan-randhawa/Job-mail-Automation",
     liveLink: "https://job-mail-automation-one.vercel.app",
@@ -52,7 +52,7 @@ export const PROJECTS = [
   {
     category: "Job Portal",
     title: "FOREWORK",
-    src: "/images/mockup/forework.png",
+    src: "/images/mockup/forework_mockup.png",
     techStack: ["MongoDB", "Express.js", "React", "Node.js"],
     githubLink: "https://github.com/Jashan-randhawa/FOREWORK",
     liveLink: "https://forework.vercel.app",
@@ -62,7 +62,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Library Management System",
-    src: "/images/mockup/library-management.png",
+    src: "/images/mockup/library-management_mockup.png",
     techStack: ["React", "TypeScript", "Express", "MongoDB"],
     githubLink: "https://github.com/Jashan-randhawa/Library_Managment_System",
     liveLink: "https://library-managment-system-ochre.vercel.app",
@@ -72,7 +72,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hospital Management System (C++)",
-    src: "/images/mockup/hospital-cpp.png",
+    src: "/images/mockup/hospital-cpp_mockup.png",
     techStack: ["C++", "OOP", "File Handling"],
     githubLink: "https://github.com/Jashan-randhawa/Hospital-Managment",
     description:
@@ -91,7 +91,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hospital Management System (Web)",
-    src: "/images/mockup/hospital-web.png",
+    src: "/images/mockup/hospital-web_mockup.png",
     techStack: ["C++", "HTTP", "HTML", "CSS", "JavaScript"],
     githubLink: "https://github.com/Jashan-randhawa/Hospital_Managment",
     liveLink: "https://hospital-managment-kappa.vercel.app",
@@ -101,7 +101,7 @@ export const PROJECTS = [
   {
     category: "E-Commerce",
     title: "Shopify Clone",
-    src: "/images/mockup/shopify-clone.png",
+    src: "/images/mockup/shopify-clone_mockup.png",
     techStack: ["React", "JavaScript", "DummyJSON API"],
     githubLink: "https://github.com/Jashan-randhawa/Shopify-Clone",
     liveLink: "https://shopify-clone-rust.vercel.app",
@@ -121,7 +121,7 @@ export const PROJECTS = [
   {
     category: "Event Management",
     title: "TalentArch",
-    src: "/images/mockup/talentarch.png",
+    src: "/images/mockup/talentarch_mockup.png",
     techStack: ["React", "JavaScript", "Node.js"],
     githubLink: "https://github.com/Jashan-randhawa/task",
     liveLink: "https://remotejob-omega.vercel.app",
@@ -131,7 +131,7 @@ export const PROJECTS = [
   {
     category: "Open Source Resource",
     title: "Sponsor",
-    src: "/images/mockup/sponsor.png",
+    src: "/images/mockup/sponsor_mockup.png",
     techStack: ["Documentation", "React", "PHP"],
     githubLink: "https://github.com/Jashan-randhawa/Sponsor",
     description:
@@ -140,7 +140,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hotel Management System (C++)",
-    src: "/images/mockup/hotel-cpp.png",
+    src: "/images/mockup/hotel-cpp_mockup.png",
     techStack: ["C++", "OOP", "File Handling"],
     githubLink: "https://github.com/Jashan-randhawa/Hotel-Managment",
     description:
@@ -149,7 +149,7 @@ export const PROJECTS = [
   {
     category: "Library Platform",
     title: "Book Application",
-    src: "/images/mockup/book-application.png",
+    src: "/images/mockup/book-application_mockup.png",
     techStack: ["React", "JavaScript"],
     githubLink: "https://github.com/Jashan-randhawa/BOOK-APPLICATION",
     liveLink: "https://book-application-woad.vercel.app",
