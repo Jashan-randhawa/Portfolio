@@ -313,17 +313,17 @@ export const Card = ({
           duration: 0.3,
         }}
       >
-        <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
-        <div className="relative z-40 p-3 md:p-8">
+        <div className="absolute h-2/5 top-0 inset-x-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-30 pointer-events-none" />
+        <div className="relative z-40 p-3 md:p-8 max-w-[85%]">
           <motion.p
             layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-white text-base md:text-xl font-semibold  text-left"
+            className="text-white text-base md:text-xl font-semibold text-left drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]"
           >
             {card.category}
           </motion.p>
           <motion.p
             layoutId={layout ? `title-${card.title}` : undefined}
-            className="text-white text-xl md:text-3xl max-w-xs text-left [text-wrap:balance] mt-2 font-black italic"
+            className="text-white text-xl md:text-3xl max-w-xs text-left [text-wrap:balance] mt-2 font-black italic drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]"
           >
             {card.title}
           </motion.p>
