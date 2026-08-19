@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
+import Image from "next/image"
 import { MY_NETWORKS } from "@/data/my-networks"
 import {
   Code,
@@ -11,6 +12,7 @@ import {
   Zap,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { GlowingEffect } from "@/components/ui/glowing-effect"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -21,19 +23,36 @@ const fadeUp = {
   }),
 }
 
-const skills = [
-  { name: "React", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300" },
-  { name: "Next.js", color: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300" },
-  { name: "TypeScript", color: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300" },
-  { name: "Node.js", color: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300" },
-  { name: "MongoDB", color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" },
-  { name: "Tailwind CSS", color: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300" },
-  { name: "Express.js", color: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300" },
-  { name: "Redux", color: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300" },
-  { name: "Python", color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300" },
-  { name: "Socket.IO", color: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300" },
-  { name: "MySQL", color: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300" },
-  { name: "REST APIs", color: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300" },
+const skillGroups = [
+  {
+    label: "Frontend",
+    skills: [
+      { name: "React", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300" },
+      { name: "Next.js", color: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300" },
+      { name: "TypeScript", color: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300" },
+      { name: "Redux", color: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300" },
+      { name: "Tailwind CSS", color: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300" },
+    ],
+  },
+  {
+    label: "Backend",
+    skills: [
+      { name: "Node.js", color: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300" },
+      { name: "Express.js", color: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300" },
+      { name: "MongoDB", color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" },
+      { name: "MySQL", color: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300" },
+      { name: "REST APIs", color: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300" },
+      { name: "Socket.IO", color: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300" },
+    ],
+  },
+  {
+    label: "Languages & Tools",
+    skills: [
+      { name: "Python", color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300" },
+      { name: "C++", color: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300" },
+      { name: "Git & GitHub", color: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300" },
+    ],
+  },
 ]
 
 const values = [
@@ -110,9 +129,27 @@ export function AboutContent() {
         <motion.div
           custom={1}
           variants={fadeUp}
-          className="w-40 h-40 rounded-3xl bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 flex items-center justify-center shrink-0 shadow-2xl"
+          className="relative w-40 h-40 md:w-48 md:h-48 rounded-3xl shrink-0 p-1"
         >
-          <GraduationCap className="size-20 text-white" />
+          <GlowingEffect
+            blur={0}
+            borderWidth={2}
+            spread={60}
+            glow={true}
+            disabled={false}
+            proximity={48}
+            inactiveZone={0.01}
+          />
+          <div className="relative w-full h-full rounded-[1.35rem] overflow-hidden border bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500">
+            <Image
+              src="/images/avt-card.png"
+              alt="Jashanpreet Singh"
+              fill
+              sizes="192px"
+              className="object-cover"
+              priority
+            />
+          </div>
         </motion.div>
       </motion.section>
 
@@ -125,6 +162,10 @@ export function AboutContent() {
         viewport={{ once: true }}
         className="space-y-4"
       >
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest text-purple-500 uppercase">
+          <span className="h-px w-6 bg-purple-500/50" />
+          Journey
+        </div>
         <h2 className="text-2xl font-bold">My Story</h2>
         <div className="space-y-3 text-muted-foreground leading-relaxed">
           <p>
@@ -150,18 +191,38 @@ export function AboutContent() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="space-y-4"
+        className="space-y-6"
       >
-        <h2 className="text-2xl font-bold">Tech I Work With</h2>
-        <motion.div className="flex flex-wrap gap-2">
-          {skills.map((skill, i) => (
-            <motion.div key={skill.name} custom={i} variants={fadeUp}>
-              <Badge className={`px-3 py-1 text-sm font-medium ${skill.color} border-0`}>
-                {skill.name}
-              </Badge>
-            </motion.div>
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-semibold tracking-widest text-blue-500 uppercase">
+            <span className="h-px w-6 bg-blue-500/50" />
+            Stack
+          </div>
+          <h2 className="text-2xl font-bold">Tech I Work With</h2>
+        </div>
+
+        <div className="space-y-5">
+          {skillGroups.map((group, gi) => (
+            <div key={group.label} className="space-y-2">
+              <h3 className="text-sm font-medium text-muted-foreground">
+                {group.label}
+              </h3>
+              <motion.div className="flex flex-wrap gap-2">
+                {group.skills.map((skill, i) => (
+                  <motion.div
+                    key={skill.name}
+                    custom={gi * 3 + i}
+                    variants={fadeUp}
+                  >
+                    <Badge className={`px-3 py-1 text-sm font-medium ${skill.color} border-0`}>
+                      {skill.name}
+                    </Badge>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </motion.section>
 
       {/* Values */}
@@ -171,6 +232,10 @@ export function AboutContent() {
         viewport={{ once: true }}
         className="space-y-4"
       >
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest text-amber-500 uppercase">
+          <span className="h-px w-6 bg-amber-500/50" />
+          Principles
+        </div>
         <h2 className="text-2xl font-bold">What I Value</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {values.map((v, i) => (
@@ -178,8 +243,8 @@ export function AboutContent() {
               key={v.title}
               custom={i}
               variants={fadeUp}
-              whileHover={{ scale: 1.02 }}
-              className={`p-5 rounded-2xl border ${v.bg} transition-colors`}
+              whileHover={{ scale: 1.02, y: -2 }}
+              className={`p-5 rounded-2xl border ${v.bg} transition-colors hover:shadow-lg`}
             >
               <div className="mb-3">{v.icon}</div>
               <h3 className="font-semibold text-lg mb-1">{v.title}</h3>
@@ -198,14 +263,23 @@ export function AboutContent() {
         viewport={{ once: true }}
         className="space-y-4"
       >
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest text-rose-500 uppercase">
+          <span className="h-px w-6 bg-rose-500/50" />
+          Background
+        </div>
         <h2 className="text-2xl font-bold">Education</h2>
         <div className="border rounded-2xl p-6 space-y-2 hover:border-purple-300 dark:hover:border-purple-800 transition-colors">
           <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div>
-              <h3 className="font-semibold text-lg">B.Tech — Information Technology</h3>
-              <p className="text-muted-foreground">
-                JMIT (Jind Institute of Engineering &amp; Management Technology), Radaur, Haryana
-              </p>
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg border p-2 shrink-0">
+                <GraduationCap className="size-5 text-purple-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">B.Tech — Information Technology</h3>
+                <p className="text-muted-foreground">
+                  JMIT (Jind Institute of Engineering &amp; Management Technology), Radaur, Haryana
+                </p>
+              </div>
             </div>
             <Badge variant="secondary" className="shrink-0">2022 – 2026</Badge>
           </div>
