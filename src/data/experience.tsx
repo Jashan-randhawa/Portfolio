@@ -126,31 +126,6 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
       </div>
     ),
   },
-
-  {
-    title: "2026 BUILDING THE NEXT CHAPTER",
-    content: (
-      <div>
-        <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-base font-normal mb-4">
-          Stepping into 2026 with a sharper focus on building products that blend
-          AI, user experience, and real-world impact. <br />
-          I am deepening my work in full-stack delivery, scalable architecture,
-          and practical automation to turn ideas into reliable experiences that
-          people actually use.
-        </p>
-
-        <div className="grid grid-cols-1 gap-4">
-          <BlurImage
-            src="/images/ilotusland/1729175406560.jpg"
-            alt="2026 journey highlight"
-            width={500}
-            height={1000}
-            className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
-          />
-        </div>
-      </div>
-    ),
-  },
   {
     title: "Highlights 2025",
     content: (
@@ -210,6 +185,30 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+          />
+        </div>
+      </div>
+    ),
+  },
+   {
+    title: "2026 BUILDING THE NEXT CHAPTER",
+    content: (
+      <div>
+        <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-base font-normal mb-4">
+          Stepping into 2026 with a sharper focus on building products that blend
+          AI, user experience, and real-world impact. <br />
+          I am deepening my work in full-stack delivery, scalable architecture,
+          and practical automation to turn ideas into reliable experiences that
+          people actually use.
+        </p>
+
+        <div className="grid grid-cols-1 gap-4">
+          <BlurImage
+            src="/images/ilotusland/1729175406560.jpg"
+            alt="2026 journey highlight"
+            width={500}
+            height={1000}
+            className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
         </div>
       </div>
