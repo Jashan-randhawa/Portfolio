@@ -347,6 +347,13 @@ export const Card = ({
         <div className="absolute duration-500 z-[11] dark:bg-slate-800 bg-slate-400 dark:opacity-35 opacity-20 dark:hover:opacity-20 hover:opacity-35 inset-0 backdrop-blur-sm"></div>
         <BlurImage
           src={card.src}
+          alt=""
+          fill
+          aria-hidden="true"
+          className="object-cover absolute z-0 inset-0 scale-110 blur-2xl opacity-60 transition duration-300"
+        />
+        <BlurImage
+          src={card.src}
           alt={card.title}
           fill
           className="object-contain absolute z-10 inset-0 transition duration-300"
