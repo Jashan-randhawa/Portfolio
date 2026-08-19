@@ -190,7 +190,7 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
       </div>
     ),
   },
-   {
+  {
     title: "2026 BUILDING THE NEXT CHAPTER",
     content: (
       <div>
@@ -210,7 +210,7 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
             height={1000}
             className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-           <BlurImage
+          <BlurImage
             src="/images/ilotusland/Scan - 2026-08-19 09_26_58.jpeg"
             alt="2026 journey highlight"
             width={500}
