@@ -2,7 +2,7 @@ export const PROJECTS = [
   {
     category: "Portfolio Website",
     title: "Portfolio",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://jashan2978.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Portfolio",
     techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     githubLink: "https://github.com/Jashan-randhawa/Portfolio",
     liveLink: "https://jashan2978.vercel.app",
@@ -12,7 +12,7 @@ export const PROJECTS = [
   {
     category: "Artificial Intelligence",
     title: "AI Fitness Tracker",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://ai-fitness-tracker1.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/AI-FitnessTracker1",
     techStack: ["React", "Strapi", "Gemini AI", "TypeScript"],
     githubLink: "https://github.com/Jashan-randhawa/AI-FitnessTracker1",
     liveLink: "https://ai-fitness-tracker1.vercel.app",
@@ -22,7 +22,7 @@ export const PROJECTS = [
   {
     category: "Automation",
     title: "Job Mail Automation",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://job-mail-automation-one.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Job-mail-Automation",
     techStack: ["JavaScript", "Node.js", "OpenRouter", "Gmail SMTP"],
     githubLink: "https://github.com/Jashan-randhawa/Job-mail-Automation",
     liveLink: "https://job-mail-automation-one.vercel.app",
@@ -32,7 +32,7 @@ export const PROJECTS = [
   {
     category: "Artificial Intelligence",
     title: "AI Attendance System",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://ai-attendance-system-mauve.vercel.app",
+    src: "/images/mockup/ilotusland_mockup.png",
     techStack: ["Python", "InsightFace", "FastAPI", "MongoDB Atlas", "React"],
     githubLink: "https://github.com/Jashan-randhawa/AI-Attendance-System",
     liveLink: "https://ai-attendance-system-mauve.vercel.app",
@@ -42,7 +42,7 @@ export const PROJECTS = [
   {
     category: "Chat System",
     title: "ECHO",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://chat-application-five-kappa.vercel.app",
+    src: "/images/mockup/tracki_mockup.png",
     techStack: ["React Native", "Expo", "Node.js", "Express", "Socket.IO", "JWT"],
     githubLink: "https://github.com/Jashan-randhawa/Chat-Application",
     liveLink: "https://chat-application-five-kappa.vercel.app",
@@ -52,7 +52,7 @@ export const PROJECTS = [
   {
     category: "Job Portal",
     title: "FOREWORK",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://forework.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/FOREWORK",
     techStack: ["MongoDB", "Express.js", "React", "Node.js"],
     githubLink: "https://github.com/Jashan-randhawa/FOREWORK",
     liveLink: "https://forework.vercel.app",
@@ -62,7 +62,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Library Management System",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://library-managment-system-ochre.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Library_Managment_System",
     techStack: ["React", "TypeScript", "Express", "MongoDB"],
     githubLink: "https://github.com/Jashan-randhawa/Library_Managment_System",
     liveLink: "https://library-managment-system-ochre.vercel.app",
@@ -81,7 +81,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Bus Reservation System",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://busrevervation.gamer.gd/Homepage.php",
+    src: "/images/mockup/hivello_mockup.png",
     techStack: ["PHP", "MySQL", "TailwindCSS", "HTML", "JavaScript", "Auth0"],
     githubLink: "https://github.com/Jashan-randhawa/Bus-Resrvation",
     liveLink: "https://busrevervation.gamer.gd/Homepage.php",
@@ -91,7 +91,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hospital Management System (Web)",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://hospital-managment-kappa.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Hospital_Managment",
     techStack: ["C++", "HTTP", "HTML", "CSS", "JavaScript"],
     githubLink: "https://github.com/Jashan-randhawa/Hospital_Managment",
     liveLink: "https://hospital-managment-kappa.vercel.app",
@@ -101,7 +101,7 @@ export const PROJECTS = [
   {
     category: "E-Commerce",
     title: "Shopify Clone",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://shopify-clone-rust.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Shopify-Clone",
     techStack: ["React", "JavaScript", "DummyJSON API"],
     githubLink: "https://github.com/Jashan-randhawa/Shopify-Clone",
     liveLink: "https://shopify-clone-rust.vercel.app",
@@ -111,7 +111,7 @@ export const PROJECTS = [
   {
     category: "Animation Website",
     title: "Ochi",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://ochi-animation.vercel.app",
+    src: "/images/mockup/growing_mockup.png",
     techStack: ["React", "Node.js", "Express.js", "Tailwind CSS"],
     githubLink: "https://github.com/Jashan-randhawa/OCHI-ANIMATION",
     liveLink: "https://ochi-animation.vercel.app",
@@ -121,7 +121,7 @@ export const PROJECTS = [
   {
     category: "Event Management",
     title: "TalentArch",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://remotejob-omega.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/task",
     techStack: ["React", "JavaScript", "Node.js"],
     githubLink: "https://github.com/Jashan-randhawa/task",
     liveLink: "https://remotejob-omega.vercel.app",
@@ -149,7 +149,7 @@ export const PROJECTS = [
   {
     category: "Library Platform",
     title: "Book Application",
-    src: "https://image.thum.io/get/width/800/crop/1000/noanimate/https://book-application-woad.vercel.app",
+    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/BOOK-APPLICATION",
     techStack: ["React", "JavaScript"],
     githubLink: "https://github.com/Jashan-randhawa/BOOK-APPLICATION",
     liveLink: "https://book-application-woad.vercel.app",
