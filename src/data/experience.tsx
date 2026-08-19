@@ -1,4 +1,4 @@
-import { BlurImage } from "@/components/ui/apple-cards-carousel"
+import { ExpandableImage } from "@/components/ui/expandable-image"
 
 export const EXPERIENCE_TIMELINE = [
   {
@@ -10,28 +10,28 @@ export const EXPERIENCE_TIMELINE = [
 Developed strong interest in web development, mastering HTML, CSS, JavaScript, and PHP while strengthening my computer science foundation through data structures and algorithms.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/CourseCertificate - IFACET IITK_page-0001.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Jashanpreet-Singh-37 (1)_page-0001.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Screenshot 2025-08-24 164444.png"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Screenshot 2025-08-24 164611.png"
             alt="startup template"
             width={500}
@@ -50,28 +50,28 @@ Developed strong interest in web development, mastering HTML, CSS, JavaScript, a
           Achieved advanced proficiency in modern web development. <br /> Mastered the MERN Stack (MongoDB, Express.js, React.js, Node.js) through intensive practice and real-world projects. Developed and deployed multiple full-stack applications with features like real-time updates, RESTful APIs, and secure authentication. Demonstrated expertise in creating responsive, accessible, and performance-optimized user interfaces using modern design principles and best practices.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/1726849292537.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/1726849293680.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/1726849294312.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Screenshot 2025-08-24 170557.png"
             alt="startup template"
             width={500}
@@ -93,7 +93,7 @@ Developed strong interest in web development, mastering HTML, CSS, JavaScript, a
         </p>
 
         <div className="grid grid-cols-1 gap-4">
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/generated-image.png"
             alt="hero template"
             width={500}
@@ -115,7 +115,7 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
         </p>
 
         <div className="grid grid-cols-1 gap-4">
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/1729175406560.jpg"
             alt="hero template"
             width={500}
@@ -158,28 +158,28 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/IMG-20250707-WA0006.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/ef280640-5a70-4f7e-8bc2-84f42e61c7ca.png"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/1726853582646.jpg"
             alt="startup template"
             width={500}
             height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/1726853581740.jpg"
             alt="startup template"
             width={500}
@@ -202,34 +202,34 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
           people actually use.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <BlurImage
+        <div className="grid grid-cols-1 gap-4">
+          <ExpandableImage
             src="/images/ilotusland/Scan - 2026-08-19 09_25_16.pdf.jpg"
             alt="2026 journey highlight"
             width={500}
-            height={500}
-            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+            height={1000}
+            className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Scan - 2026-08-19 09_26_58.jpeg"
             alt="2026 journey highlight"
             width={500}
-            height={500}
-            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+            height={1000}
+            className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Scan - 2026-08-19 09_29_07.pdf.jpg"
             alt="2026 journey highlight"
             width={500}
-            height={500}
-            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+            height={1000}
+            className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
-          <BlurImage
+          <ExpandableImage
             src="/images/ilotusland/Screenshot 2026-08-19 095623.png"
             alt="2026 journey highlight"
             width={500}
-            height={500}
-            className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
+            height={1000}
+            className="rounded-lg object-cover w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
           />
         </div>
       </div>
