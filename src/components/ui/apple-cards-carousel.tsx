@@ -349,7 +349,7 @@ export const Card = ({
           src={card.src}
           alt={card.title}
           fill
-          className="object-cover absolute z-10 inset-0  transition duration-300"
+          className="object-contain absolute z-10 inset-0 transition duration-300"
         />
       </motion.button>
     </>
