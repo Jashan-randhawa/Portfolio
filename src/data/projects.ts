@@ -2,7 +2,7 @@ export const PROJECTS = [
   {
     category: "Portfolio Website",
     title: "Portfolio",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Portfolio",
+    src: "/images/mockup/portfolio.png",
     techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     githubLink: "https://github.com/Jashan-randhawa/Portfolio",
     liveLink: "https://jashan2978.vercel.app",
@@ -12,7 +12,7 @@ export const PROJECTS = [
   {
     category: "Artificial Intelligence",
     title: "AI Fitness Tracker",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/AI-FitnessTracker1",
+    src: "/images/mockup/ai-fitness-tracker.png",
     techStack: ["React", "Strapi", "Gemini AI", "TypeScript"],
     githubLink: "https://github.com/Jashan-randhawa/AI-FitnessTracker1",
     liveLink: "https://ai-fitness-tracker1.vercel.app",
@@ -22,7 +22,7 @@ export const PROJECTS = [
   {
     category: "Automation",
     title: "Job Mail Automation",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Job-mail-Automation",
+    src: "/images/mockup/job-mail-automation.png",
     techStack: ["JavaScript", "Node.js", "OpenRouter", "Gmail SMTP"],
     githubLink: "https://github.com/Jashan-randhawa/Job-mail-Automation",
     liveLink: "https://job-mail-automation-one.vercel.app",
@@ -32,7 +32,7 @@ export const PROJECTS = [
   {
     category: "Artificial Intelligence",
     title: "AI Attendance System",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/AI-Attendance-System",
+    src: "/images/mockup/ilotusland_mockup.png",
     techStack: ["Python", "InsightFace", "FastAPI", "MongoDB Atlas", "React"],
     githubLink: "https://github.com/Jashan-randhawa/AI-Attendance-System",
     liveLink: "https://ai-attendance-system-mauve.vercel.app",
@@ -42,7 +42,7 @@ export const PROJECTS = [
   {
     category: "Chat System",
     title: "ECHO",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Chat-Application",
+    src: "/images/mockup/tracki_mockup.png",
     techStack: ["React Native", "Expo", "Node.js", "Express", "Socket.IO", "JWT"],
     githubLink: "https://github.com/Jashan-randhawa/Chat-Application",
     liveLink: "https://chat-application-five-kappa.vercel.app",
@@ -52,7 +52,7 @@ export const PROJECTS = [
   {
     category: "Job Portal",
     title: "FOREWORK",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/FOREWORK",
+    src: "/images/mockup/forework.png",
     techStack: ["MongoDB", "Express.js", "React", "Node.js"],
     githubLink: "https://github.com/Jashan-randhawa/FOREWORK",
     liveLink: "https://forework.vercel.app",
@@ -62,7 +62,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Library Management System",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Library_Managment_System",
+    src: "/images/mockup/library-management.png",
     techStack: ["React", "TypeScript", "Express", "MongoDB"],
     githubLink: "https://github.com/Jashan-randhawa/Library_Managment_System",
     liveLink: "https://library-managment-system-ochre.vercel.app",
@@ -72,7 +72,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hospital Management System (C++)",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Hospital-Managment",
+    src: "/images/mockup/hospital-cpp.png",
     techStack: ["C++", "OOP", "File Handling"],
     githubLink: "https://github.com/Jashan-randhawa/Hospital-Managment",
     description:
@@ -81,7 +81,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Bus Reservation System",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Bus-Resrvation",
+    src: "/images/mockup/hivello_mockup.png",
     techStack: ["PHP", "MySQL", "TailwindCSS", "HTML", "JavaScript", "Auth0"],
     githubLink: "https://github.com/Jashan-randhawa/Bus-Resrvation",
     liveLink: "https://busrevervation.gamer.gd/Homepage.php",
@@ -91,7 +91,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hospital Management System (Web)",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Hospital_Managment",
+    src: "/images/mockup/hospital-web.png",
     techStack: ["C++", "HTTP", "HTML", "CSS", "JavaScript"],
     githubLink: "https://github.com/Jashan-randhawa/Hospital_Managment",
     liveLink: "https://hospital-managment-kappa.vercel.app",
@@ -101,7 +101,7 @@ export const PROJECTS = [
   {
     category: "E-Commerce",
     title: "Shopify Clone",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Shopify-Clone",
+    src: "/images/mockup/shopify-clone.png",
     techStack: ["React", "JavaScript", "DummyJSON API"],
     githubLink: "https://github.com/Jashan-randhawa/Shopify-Clone",
     liveLink: "https://shopify-clone-rust.vercel.app",
@@ -111,7 +111,7 @@ export const PROJECTS = [
   {
     category: "Animation Website",
     title: "Ochi",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/OCHI-ANIMATION",
+    src: "/images/mockup/growing_mockup.png",
     techStack: ["React", "Node.js", "Express.js", "Tailwind CSS"],
     githubLink: "https://github.com/Jashan-randhawa/OCHI-ANIMATION",
     liveLink: "https://ochi-animation.vercel.app",
@@ -121,7 +121,7 @@ export const PROJECTS = [
   {
     category: "Event Management",
     title: "TalentArch",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/task",
+    src: "/images/mockup/talentarch.png",
     techStack: ["React", "JavaScript", "Node.js"],
     githubLink: "https://github.com/Jashan-randhawa/task",
     liveLink: "https://remotejob-omega.vercel.app",
@@ -131,7 +131,7 @@ export const PROJECTS = [
   {
     category: "Open Source Resource",
     title: "Sponsor",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Sponsor",
+    src: "/images/mockup/sponsor.png",
     techStack: ["Documentation", "React", "PHP"],
     githubLink: "https://github.com/Jashan-randhawa/Sponsor",
     description:
@@ -140,7 +140,7 @@ export const PROJECTS = [
   {
     category: "Management System",
     title: "Hotel Management System (C++)",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/Hotel-Managment",
+    src: "/images/mockup/hotel-cpp.png",
     techStack: ["C++", "OOP", "File Handling"],
     githubLink: "https://github.com/Jashan-randhawa/Hotel-Managment",
     description:
@@ -149,7 +149,7 @@ export const PROJECTS = [
   {
     category: "Library Platform",
     title: "Book Application",
-    src: "https://opengraph.githubassets.com/1/Jashan-randhawa/BOOK-APPLICATION",
+    src: "/images/mockup/book-application.png",
     techStack: ["React", "JavaScript"],
     githubLink: "https://github.com/Jashan-randhawa/BOOK-APPLICATION",
     liveLink: "https://book-application-woad.vercel.app",
