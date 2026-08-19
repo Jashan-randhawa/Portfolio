@@ -142,11 +142,11 @@ export function AboutContent() {
           />
           <div className="relative w-full h-full rounded-[1.35rem] overflow-hidden border bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500">
             <Image
-              src="/images/avt-card.png"
+              src="/images/digitalfortress/WhatsApp Image 2025-05-04 at 15.17.26_d04562fd.jpg"
               alt="Jashanpreet Singh"
               fill
               sizes="192px"
-              className="object-cover"
+              className="object-cover object-top"
               priority
             />
           </div>
