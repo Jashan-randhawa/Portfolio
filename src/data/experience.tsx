@@ -191,6 +191,38 @@ Step by step, I earned trust as a key contributor—shipping features end-to-end
     ),
   },
   {
+    title: "JUNE 2026 GRADUATED BTECH",
+    content: (
+      <div>
+        <p className="text-neutral-800 dark:text-neutral-200 text-sm md:text-base font-normal mb-8">
+          Completed my BTech (IT) degree, closing out four years of learning,
+          building, and shipping real projects. <br />
+          From writing my first line of HTML to designing AI agents in
+          production, this milestone marks the foundation for everything
+          that&apos;s next.
+        </p>
+
+        <div className="mb-8">
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            🎓 Graduated BTech in Information Technology
+          </div>
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            ✅ Built and shipped 15+ full-stack and AI projects during the
+            degree
+          </div>
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            ✅ Gained hands-on industry experience as a key contributor at
+            Digital Fortress
+          </div>
+          <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+            ✅ Strengthened core CS fundamentals alongside applied
+            engineering work
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
     title: "2026 BUILDING THE NEXT CHAPTER",
     content: (
       <div>
