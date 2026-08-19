@@ -9,7 +9,7 @@ export const EXPERIENCE_TIMELINE = [
          Started my engineering journey at JMIT Radaur. <br />{" "}
 Developed strong interest in web development, mastering HTML, CSS, JavaScript, and PHP while strengthening my computer science foundation through data structures and algorithms.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <ExpandableImage
             src="/images/ilotusland/CourseCertificate - IFACET IITK_page-0001.jpg"
             alt="startup template"
