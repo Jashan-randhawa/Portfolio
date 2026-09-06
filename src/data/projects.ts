@@ -25,7 +25,7 @@ export const PROJECTS = [
     src: "/images/mockup/job-mail-automation_mockup.png",
     techStack: ["JavaScript", "Node.js", "OpenRouter", "Gmail SMTP"],
     githubLink: "https://github.com/Jashan-randhawa/Job-mail-Automation",
-    liveLink: "https://job-mail-automation-one.vercel.app",
+    liveLink: "https://autosend-kappa.vercel.app/",
     description:
       "An LLM drafts a personalized outreach email, attaches your resume, and sends it via Gmail SMTP, gated by an automated safety check that blocks empty, too-short, or placeholder-ridden drafts.",
   },
