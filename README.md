@@ -1,127 +1,95 @@
-# 🚀 Jashanpreet Singh — Developer Portfolio
+<div align="center">
 
-> A modern, responsive portfolio built with **Next.js 15**, **Tailwind CSS**, **MagicUI** & **AceternityUI** — showcasing my journey as a Frontend & AI developer.
+# ⚡ Jashanpreet Singh — Portfolio
 
-🔗 **Live:** [jashan2978.vercel.app](https://jashan2978.vercel.app)
-💼 **GitHub:** [@Jashan-randhawa](https://github.com/Jashan-randhawa)
-🎓 **B.Tech IT** — JMIT Radaur, Haryana (2022–2026)
+### Modern Full-Stack & AI Developer Portfolio
 
----
+A high-performance personal portfolio built with **Next.js 15/16 App Router**, **React 19**, **Tailwind CSS v4**, **Three.js**, and **Motion**. Designed with accessible aesthetics, interactive 3D elements, and smooth micro-interactions.
 
-## ✨ Features
+<br/>
 
-- 🌗 **Light / Dark Mode** — Smooth theme switching with system preference support
-- 🎨 **Animated UI** — Framer Motion transitions, MagicUI & AceternityUI components
-- 📱 **Fully Responsive** — Mobile-first design across all screen sizes
-- ⚡ **Performance Optimized** — Lazy loading, Next.js image optimization
-- 🎵 **Spotify Integration** — Theme-aware music embedding
-- 🔍 **SEO Friendly** — Meta tags, Open Graph, and accessibility best practices
-- 💼 **Project Showcase** — Cards with tech tags, live demo & repo links
-- 🧠 **Skills Visualization** — Interactive tech stack display
-- 📅 **Experience Timeline** — Year-by-year journey with certificates & highlights
-- 🤖 **AI Section** — Highlights AI agent work and integration projects
+[![Live Website](https://img.shields.io/badge/Live_Portfolio-jashan2978.vercel.app-00dfa2?style=for-the-badge&logo=vercel&logoColor=white)](https://jashan2978.vercel.app)
+[![GitHub Profile](https://img.shields.io/badge/GitHub-Jashan--randhawa-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Jashan-randhawa)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
----
+<br/>
 
-## 🛠️ Tech Stack
+[![Next.js](https://img.shields.io/badge/Next.js-App_Router-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Three.js](https://img.shields.io/badge/Three.js-R3F_3D-000000?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org/)
+[![Framer Motion](https://img.shields.io/badge/Motion-v12-FF0055?style=flat-square&logo=framer&logoColor=white)](https://motion.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 15 (App Router) |
-| Styling | Tailwind CSS |
-| Animations | Framer Motion |
-| UI Components | MagicUI, AceternityUI, shadcn/ui |
-| Icons | Lucide, Tabler Icons |
-| Deployment | Vercel |
+</div>
 
 ---
 
-## 📁 Project Structure
+## ✨ Key Highlights
 
-```
-Portfolio/
-├── public/               # Static assets (images, resume, icons)
-├── src/
-│   ├── app/              # Next.js App Router pages
-│   ├── components/
-│   │   ├── ui/           # Reusable UI components (Compare, Lens, Lamp…)
-│   │   └── magicui/      # MagicUI animated components
-│   ├── containers/       # Page sections (Hero, Projects, Experience…)
-│   ├── data/             # Personal info, projects, role titles
-│   ├── lib/              # Utility functions (cn, etc.)
-│   └── styles/           # Global styles
-```
+- 🌗 **Adaptive Themes** — Seamless Light & Dark mode powered by `next-themes`
+- 🎨 **Visual Polish** — Custom 3D canvas with Three.js (`@react-three/fiber`) & interactive particles (`tsparticles`)
+- 🪄 **Fluid Motion** — Gesture-based spring physics animations and page reveals with `motion`
+- 📱 **Mobile-First & Responsive** — Pixel-perfect layouts crafted for all viewports
+- 🎵 **Spotify Widget** — Theme-aware media integration
+- 🚀 **Next-Gen Speed** — Turbopack builds, Next.js image optimization, Vercel Speed Insights & Analytics
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Core Tech Stack
+
+| Layer | Stack |
+| :--- | :--- |
+| **Framework** | [Next.js 15/16](https://nextjs.org/) (App Router, Turbopack) & [React 19](https://react.dev/) |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/), Radix UI Primitives, Lucide Icons |
+| **3D & Effects** | [Three.js](https://threejs.org/), React Three Fiber, TSParticles |
+| **Animations** | [Motion](https://motion.dev/) (Framer Motion v12), Aceternity UI, Magic UI |
+| **Analytics & Host** | [Vercel](https://vercel.com/) (Speed Insights, Web Analytics) |
+
+---
+
+## 📦 Featured Projects
+
+| Project | Tech Stack | Type | Live Demo |
+| :--- | :--- | :---: | :---: |
+| **FOREWORK** | MERN Stack, Redux Toolkit, Cloudinary, Docker | Job Portal | [Demo](https://forework.vercel.app) |
+| **ECHO** | MERN Stack, Socket.IO, Tailwind, Cloudinary | Real-Time Chat | [Live](https://github.com/Jashan-randhawa/Chat-Application) |
+| **Ochi Design** | React, Framer Motion, Tailwind CSS | Animated Web Experience | [Live](https://github.com/Jashan-randhawa) |
+| **Bus Reservation** | PHP, MySQL, Tailwind, Auth0 | Management System | [Repo](https://github.com/Jashan-randhawa) |
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-# Clone the repo
+# 1. Clone the repository
 git clone https://github.com/Jashan-randhawa/Portfolio.git
 cd Portfolio
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Run dev server
+# 3. Start development server with Turbopack
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view your local instance.
 
 ---
 
-## 📦 Projects Featured
+## 📬 Connect & Collaborate
 
-| Project | Stack | Type |
-|---|---|---|
-| **Bus Reservation System** | PHP, MySQL, Tailwind, Auth0 | Management System |
-| **Ochi** | MERN Stack, Tailwind CSS | Animation Website |
-| **ECHO** | MERN Stack, Socket.IO, Cloudinary | Real-time Chat |
-| **AI Project** | Python, Azure, Streamlit, OpenAI API | Artificial Intelligence |
+<div align="center">
 
----
+**Jashanpreet Singh**  
+*Final-Year B.Tech IT — JMIT Radaur, Haryana*
 
-## 🧑‍💻 About Me
+[![Portfolio](https://img.shields.io/badge/Portfolio-jashan2978.vercel.app-00dfa2?style=flat-square&logo=vercel&logoColor=white)](https://jashan2978.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Jashan--randhawa-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Jashan-randhawa)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub_Sponsors-EA4AAA?style=flat-square&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/Jashan-randhawa)
 
-I'm **Jashanpreet Singh**, a final-year B.Tech IT student at JMIT Radaur, Haryana.
+<br/>
 
-- ⚛️ **React Enthusiast** — Building scalable, component-driven UIs
-- 🚀 **MERN Stack Explorer** — Full-stack apps with real-world features
-- 🤖 **AI Developer** — Designing AI agents, RAG pipelines & webhooks
-- 🏆 **DSA** — Continuously sharpening algorithmic problem-solving skills
+<sub>⭐ Star this repo if you find it helpful!</sub>
 
-**Timeline:**
-- 2022 — Started B.Tech, mastered HTML, CSS, JS, PHP
-- 2023 — MERN Stack, full-stack projects, RESTful APIs
-- 2024 — Led frontend optimizations, improved performance & scalability
-- 2025 — AI agent development @ Digital Fortress, shipped production features
-
----
-
-## 🚢 Deployment
-
-Deployed on **Vercel** with automatic CI/CD on every push to `main`.
-
-```bash
-# Build for production
-npm run build
-```
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
----
-
-## 📬 Contact
-
-| Platform | Link |
-|---|---|
-| 🌐 Portfolio | [jashan2978.vercel.app](https://jashan2978.vercel.app) |
-| 💻 GitHub | [@Jashan-randhawa](https://github.com/Jashan-randhawa) |
-| 💼 Sponsor | [github.com/sponsors/Jashan-randhawa](https://github.com/sponsors/Jashan-randhawa) |
-
----
-
-<p align="center">⭐ If you like this portfolio, consider giving it a star!</p>
-<p align="center">© 2025 Jashanpreet Singh. All rights reserved.</p>
+</div>
