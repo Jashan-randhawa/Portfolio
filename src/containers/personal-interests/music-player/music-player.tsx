@@ -25,6 +25,7 @@ import {
   Trash2,
   X,
   Disc3,
+  Maximize2,
 } from "lucide-react"
 import {
   DEFAULT_TRACKS,
@@ -52,6 +53,53 @@ const SEARCH_PRESETS = [
   "Satinder Sartaaj",
   "Daler Mehndi",
 ]
+
+const GENRE_CONFIG: Record<
+  string,
+  {
+    badge: string
+    color: string
+    activeBg: string
+    border: string
+    gradient: string
+  }
+> = {
+  bhangra: {
+    badge: "🎉 Bhangra",
+    color: "text-amber-500 dark:text-amber-400",
+    activeBg: "bg-amber-500 text-white shadow-amber-500/25",
+    border: "border-amber-500/40",
+    gradient: "from-amber-500 to-orange-500",
+  },
+  motivational: {
+    badge: "⚡ Motivation",
+    color: "text-cyan-500 dark:text-cyan-400",
+    activeBg: "bg-cyan-500 text-white shadow-cyan-500/25",
+    border: "border-cyan-500/40",
+    gradient: "from-cyan-500 to-blue-500",
+  },
+  rap: {
+    badge: "🎤 Hip-Hop",
+    color: "text-emerald-500 dark:text-emerald-400",
+    activeBg: "bg-emerald-500 text-white shadow-emerald-500/25",
+    border: "border-emerald-500/40",
+    gradient: "from-emerald-500 to-teal-500",
+  },
+  sufi: {
+    badge: "🕊️ Sufi",
+    color: "text-violet-500 dark:text-violet-400",
+    activeBg: "bg-violet-500 text-white shadow-violet-500/25",
+    border: "border-violet-500/40",
+    gradient: "from-violet-500 to-purple-500",
+  },
+  folk: {
+    badge: "🪕 Folk",
+    color: "text-rose-500 dark:text-rose-400",
+    activeBg: "bg-rose-500 text-white shadow-rose-500/25",
+    border: "border-rose-500/40",
+    gradient: "from-rose-500 to-pink-500",
+  },
+}
 
 export function MusicPlayer() {
   const [mounted, setMounted] = useState(false)
@@ -86,6 +134,7 @@ export function MusicPlayer() {
   const currentTrack = tracks[currentTrackIndex] || DEFAULT_TRACKS[0]
   const currentGenre =
     PUNJABI_GENRES.find((g) => g.id === selectedGenreId) || PUNJABI_GENRES[0]
+  const genreMeta = GENRE_CONFIG[selectedGenreId] || GENRE_CONFIG.bhangra
 
   useEffect(() => {
     setMounted(true)
@@ -141,7 +190,7 @@ export function MusicPlayer() {
 
   const handlePrev = () => {
     if (tracks.length === 0) return
-    // If more than 3 seconds in, rewind to beginning
+    // Rewind to beginning if >3 seconds into the song
     if (audioRef.current && audioRef.current.currentTime > 3) {
       audioRef.current.currentTime = 0
       setCurrentTime(0)
@@ -169,7 +218,7 @@ export function MusicPlayer() {
     } else if (repeatMode === "all") {
       handleNext()
     } else {
-      // Repeat is off
+      // Repeat off
       if (currentTrackIndex < tracks.length - 1) {
         handleNext()
       } else {
@@ -283,12 +332,14 @@ export function MusicPlayer() {
 
   if (!mounted) {
     return (
-      <div className="w-full h-[400px] rounded-2xl bg-neutral-100 dark:bg-neutral-800/60 animate-pulse" />
+      <div className="w-full h-[480px] rounded-2xl bg-neutral-100 dark:bg-neutral-800/60 animate-pulse" />
     )
   }
 
+  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0
+
   return (
-    <div className="flex flex-col w-full h-full select-none">
+    <div className="flex flex-col w-full h-full select-none justify-between">
       <audio
         ref={audioRef}
         onTimeUpdate={handleTimeUpdate}
@@ -296,12 +347,15 @@ export function MusicPlayer() {
         onEnded={handleSongEnded}
       />
 
-      {/* Top Header & Navigation Bar */}
-      <div className="flex items-center justify-between pb-2.5 px-0.5 border-b border-neutral-200/60 dark:border-neutral-800/60">
+      {/* Modern Top Header with Brand Badge & Tabs */}
+      <div className="flex items-center justify-between pb-2.5 px-0.5 border-b border-neutral-200/60 dark:border-neutral-800/60 shrink-0">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200">
             <Radio className="size-3.5 text-emerald-500 animate-pulse" />
-            <span className="tracking-tight">JioSaavn Punjabi</span>
+            <span className="tracking-tight bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 bg-clip-text text-transparent font-extrabold">
+              JioSaavn
+            </span>
+            <span className="text-[10px] text-neutral-400 font-normal">Hi-Fi</span>
           </div>
 
           {/* Equalizer animation when playing */}
@@ -323,7 +377,7 @@ export function MusicPlayer() {
           <button
             type="button"
             onClick={() => setActiveTab("player")}
-            className={`px-2 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer ${
+            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer ${
               activeTab === "player"
                 ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
                 : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
@@ -334,7 +388,7 @@ export function MusicPlayer() {
           <button
             type="button"
             onClick={() => setActiveTab("genres")}
-            className={`px-2 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
               activeTab === "genres"
                 ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
                 : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
@@ -346,7 +400,7 @@ export function MusicPlayer() {
           <button
             type="button"
             onClick={() => setActiveTab("search")}
-            className={`px-2 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
               activeTab === "search"
                 ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
                 : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
@@ -358,7 +412,7 @@ export function MusicPlayer() {
           <button
             type="button"
             onClick={() => setActiveTab("queue")}
-            className={`px-2 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
               activeTab === "queue"
                 ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
                 : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
@@ -370,10 +424,10 @@ export function MusicPlayer() {
         </div>
       </div>
 
-      {/* Main Tab Content Area */}
-      <div className="relative flex-1 flex flex-col justify-between pt-2">
+      {/* Main Tab Content View */}
+      <div className="relative flex-1 flex flex-col justify-between pt-2 overflow-hidden">
         <AnimatePresence mode="wait">
-          {/* TAB 1: NOW PLAYING */}
+          {/* TAB 1: NOW PLAYING SCREEN */}
           {activeTab === "player" && (
             <motion.div
               key="player"
@@ -383,21 +437,32 @@ export function MusicPlayer() {
               transition={{ duration: 0.2 }}
               className="flex flex-col flex-1 justify-between"
             >
-              {/* Turntable / Vinyl Showcase */}
-              <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-neutral-50/80 dark:bg-neutral-900/80 border border-neutral-200/60 dark:border-neutral-800/60 shadow-xs backdrop-blur-xs">
-                {/* Rotating Vinyl Record Artwork */}
-                <div className="relative size-20 sm:size-24 shrink-0 flex items-center justify-center">
+              {/* Turntable Showcase Card */}
+              <div className="relative flex items-center gap-3.5 p-3 rounded-2xl bg-neutral-50/90 dark:bg-neutral-900/90 border border-neutral-200/70 dark:border-neutral-800/70 shadow-xs backdrop-blur-md overflow-hidden group">
+                {/* Ambient dynamic glow behind artwork */}
+                <div
+                  className={`absolute -left-6 -top-6 size-32 rounded-full blur-2xl pointer-events-none transition-opacity duration-700 ${
+                    isPlaying
+                      ? "opacity-35 bg-emerald-500/40"
+                      : "opacity-15 bg-neutral-500/20"
+                  }`}
+                />
+
+                {/* Rotating Vinyl Record Artwork with Tonearm */}
+                <div className="relative size-24 sm:size-28 shrink-0 flex items-center justify-center">
+                  {/* Vinyl Record */}
                   <div
-                    className="relative w-full h-full rounded-full bg-neutral-950 p-1 shadow-lg ring-1 ring-black/10 dark:ring-white/10 overflow-hidden"
+                    className="relative size-24 sm:size-28 rounded-full bg-neutral-950 p-1 shadow-xl ring-1 ring-black/10 dark:ring-white/10 overflow-hidden cursor-pointer"
                     style={{
                       animation: "spin 8s linear infinite",
                       animationPlayState: isPlaying ? "running" : "paused",
                     }}
+                    onClick={togglePlay}
                   >
                     {/* Vinyl concentric groove patterns */}
-                    <div className="absolute inset-1 rounded-full border border-neutral-800/60 pointer-events-none" />
-                    <div className="absolute inset-2.5 rounded-full border border-neutral-800/40 pointer-events-none" />
-                    <div className="absolute inset-4 rounded-full border border-neutral-800/20 pointer-events-none" />
+                    <div className="absolute inset-1.5 rounded-full border border-neutral-800/80 pointer-events-none" />
+                    <div className="absolute inset-3 rounded-full border border-neutral-800/50 pointer-events-none" />
+                    <div className="absolute inset-5 rounded-full border border-neutral-800/30 pointer-events-none" />
 
                     {/* Album Art Centerpiece */}
                     <div className="relative w-full h-full rounded-full overflow-hidden">
@@ -410,33 +475,33 @@ export function MusicPlayer() {
                       />
                     </div>
 
-                    {/* Vinyl Spindle Center Hole */}
+                    {/* Central Vinyl Spindle Hole */}
                     <div className="absolute inset-0 m-auto size-3 rounded-full bg-neutral-950 border border-neutral-600 shadow-inner z-10" />
                   </div>
 
-                  {/* Play/Pause overlay badge on hover */}
+                  {/* Play / Pause overlay on hover */}
                   <button
                     type="button"
                     onClick={togglePlay}
-                    className="absolute inset-0 m-auto size-7 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-20 backdrop-blur-xs"
+                    className="absolute inset-0 m-auto size-8 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 backdrop-blur-xs shadow-md"
                     title={isPlaying ? "Pause" : "Play"}
                   >
                     {isPlaying ? (
-                      <Pause className="size-3.5 fill-white" />
+                      <Pause className="size-4 fill-white" />
                     ) : (
-                      <Play className="size-3.5 fill-white translate-x-0.5" />
+                      <Play className="size-4 fill-white translate-x-0.5" />
                     )}
                   </button>
                 </div>
 
-                {/* Track Details */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                {/* Track Details & Soundwave */}
+                <div className="flex-1 min-w-0 flex flex-col justify-center z-10">
                   <div className="flex items-center gap-1.5">
                     <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                       160kbps AAC
                     </span>
                     {currentTrack.year && (
-                      <span className="text-[10px] text-neutral-400">
+                      <span className="text-[10px] text-neutral-400 font-medium">
                         {currentTrack.year}
                       </span>
                     )}
@@ -456,20 +521,31 @@ export function MusicPlayer() {
                     {currentTrack.artist}
                   </p>
 
-                  {currentTrack.album && (
-                    <span
-                      className="text-[11px] text-neutral-400 dark:text-neutral-500 truncate mt-0.5"
-                      title={currentTrack.album}
-                    >
-                      Album: {currentTrack.album}
-                    </span>
-                  )}
+                  {/* 12-Bar Animated Soundwave Visualizer */}
+                  <div className="flex items-end gap-1 h-3.5 mt-2.5">
+                    {Array.from({ length: 12 }).map((_, idx) => (
+                      <span
+                        key={idx}
+                        className={`w-1 rounded-full transition-all duration-300 ${
+                          isPlaying
+                            ? "bg-gradient-to-t from-emerald-500 to-teal-400 animate-pulse"
+                            : "bg-neutral-300 dark:bg-neutral-700"
+                        }`}
+                        style={{
+                          height: isPlaying
+                            ? `${Math.sin(idx * 0.7 + 1) * 35 + 55}%`
+                            : "20%",
+                          animationDelay: `${(idx * 110) % 800}ms`,
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {/* Interactive Progress Bar & Timestamps */}
-              <div className="space-y-1 my-2.5 px-1">
-                <div className="relative group">
+              <div className="space-y-1 my-2 px-1">
+                <div className="relative group flex items-center">
                   <input
                     type="range"
                     min={0}
@@ -486,14 +562,14 @@ export function MusicPlayer() {
               </div>
 
               {/* Main Playback Controls Bar */}
-              <div className="flex items-center justify-between px-2 pt-1 pb-1">
+              <div className="flex items-center justify-between px-2 pt-0.5 pb-1">
                 {/* Shuffle Mode Toggle */}
                 <button
                   type="button"
                   onClick={() => setIsShuffle(!isShuffle)}
                   className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                     isShuffle
-                      ? "text-emerald-500 bg-emerald-500/10"
+                      ? "text-emerald-500 bg-emerald-500/10 font-bold"
                       : "text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
                   }`}
                   title={isShuffle ? "Shuffle On" : "Shuffle Off"}
@@ -515,7 +591,7 @@ export function MusicPlayer() {
                 <button
                   type="button"
                   onClick={togglePlay}
-                  className="p-3.5 rounded-full bg-emerald-500 text-white shadow-md shadow-emerald-500/25 hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                  className="p-3.5 rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                   title={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying ? (
@@ -541,7 +617,7 @@ export function MusicPlayer() {
                   onClick={toggleRepeatMode}
                   className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                     repeatMode !== "off"
-                      ? "text-emerald-500 bg-emerald-500/10"
+                      ? "text-emerald-500 bg-emerald-500/10 font-bold"
                       : "text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
                   }`}
                   title={
@@ -622,12 +698,13 @@ export function MusicPlayer() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col flex-1 h-[280px]"
+              className="flex flex-col flex-1 h-[270px] justify-between"
             >
               {/* Genre Selector Pills */}
-              <div className="flex items-center gap-1 pb-2 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1 pb-1.5 overflow-x-auto no-scrollbar shrink-0">
                 {PUNJABI_GENRES.map((genre) => {
                   const isSelected = genre.id === selectedGenreId
+                  const config = GENRE_CONFIG[genre.id] || GENRE_CONFIG.bhangra
                   return (
                     <button
                       key={genre.id}
@@ -635,19 +712,21 @@ export function MusicPlayer() {
                       onClick={() => setSelectedGenreId(genre.id)}
                       className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all whitespace-nowrap cursor-pointer flex items-center gap-1 ${
                         isSelected
-                          ? "bg-emerald-500 text-white font-semibold shadow-xs"
+                          ? `${config.activeBg} font-semibold shadow-xs`
                           : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700"
                       }`}
                     >
-                      <span>{genre.badge}</span>
-                      <span>({genre.tracks.length})</span>
+                      <span>{config.badge}</span>
+                      <span className="text-[10px] opacity-75">(20)</span>
                     </button>
                   )
                 })}
               </div>
 
-              {/* Genre Header & Play All CTA */}
-              <div className="flex items-center justify-between p-2 mb-1.5 rounded-xl bg-neutral-100/80 dark:bg-neutral-800/80">
+              {/* Genre Banner & Play All CTA */}
+              <div
+                className={`flex items-center justify-between p-2 mb-1.5 rounded-xl border bg-neutral-50/80 dark:bg-neutral-900/80 ${genreMeta.border} shrink-0`}
+              >
                 <div className="min-w-0 pr-2">
                   <h5 className="text-xs font-bold text-neutral-900 dark:text-neutral-100 truncate">
                     {currentGenre.name}
@@ -659,64 +738,85 @@ export function MusicPlayer() {
                 <button
                   type="button"
                   onClick={() => loadGenrePlaylist(currentGenre, 0)}
-                  className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-emerald-500 text-white flex items-center gap-1 hover:bg-emerald-600 transition-colors shrink-0 shadow-xs cursor-pointer"
+                  className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-gradient-to-r ${genreMeta.gradient} text-white flex items-center gap-1 hover:scale-105 transition-transform shrink-0 shadow-xs cursor-pointer`}
                 >
                   <Play className="size-3 fill-white" />
-                  <span>Play All</span>
+                  <span>Play All (20)</span>
                 </button>
               </div>
 
               {/* List of 20 songs in this genre */}
               <div className="flex-1 overflow-y-auto space-y-1 pr-1 no-scrollbar">
-                {currentGenre.tracks.map((song, i) => (
-                  <div
-                    key={`${song.id}-${i}`}
-                    className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors group"
-                  >
-                    <span className="text-[10px] font-mono text-neutral-400 w-4 text-center shrink-0">
-                      {i + 1}
-                    </span>
-                    <div className="relative size-8 rounded-lg overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-800">
-                      <Image
-                        src={song.image || "/images/project-icon.webp"}
-                        alt={song.title}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    </div>
+                {currentGenre.tracks.map((song, i) => {
+                  const isThisPlaying =
+                    isPlaying && currentTrack.id === song.id
+                  return (
                     <div
-                      className="flex-1 min-w-0 cursor-pointer"
-                      onClick={() => loadGenrePlaylist(currentGenre, i)}
+                      key={`${song.id}-${i}`}
+                      className={`flex items-center gap-2 p-1.5 rounded-xl transition-colors group ${
+                        isThisPlaying
+                          ? "bg-emerald-500/10 border border-emerald-500/30"
+                          : "hover:bg-neutral-100 dark:hover:bg-neutral-800/80"
+                      }`}
                     >
-                      <p className="text-xs font-semibold truncate text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors">
-                        {song.title}
-                      </p>
-                      <p className="text-[10px] text-neutral-500 truncate">
-                        {song.artist}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => addSongToQueue(song)}
-                        className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
-                        title="Add to queue"
-                      >
-                        <Plus className="size-3.5" />
-                      </button>
-                      <button
-                        type="button"
+                      <span className="text-[10px] font-mono text-neutral-400 w-4 text-center shrink-0">
+                        {i + 1}
+                      </span>
+                      <div className="relative size-8 rounded-lg overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-800">
+                        <Image
+                          src={song.image || "/images/project-icon.webp"}
+                          alt={song.title}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                      <div
+                        className="flex-1 min-w-0 cursor-pointer"
                         onClick={() => loadGenrePlaylist(currentGenre, i)}
-                        className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
-                        title="Play now"
                       >
-                        <Play className="size-3.5 fill-current" />
-                      </button>
+                        <p
+                          className={`text-xs font-semibold truncate ${
+                            isThisPlaying
+                              ? "text-emerald-500"
+                              : "text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500"
+                          } transition-colors`}
+                        >
+                          {song.title}
+                        </p>
+                        <p className="text-[10px] text-neutral-500 truncate">
+                          {song.artist}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-1 shrink-0">
+                        {isThisPlaying && (
+                          <div className="flex items-end gap-0.5 h-2.5 mr-1">
+                            <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:0ms]" />
+                            <span className="w-0.5 h-2/3 bg-emerald-500 rounded-full animate-bounce [animation-delay:150ms]" />
+                            <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:300ms]" />
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => addSongToQueue(song)}
+                          className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                          title="Add to queue"
+                        >
+                          <Plus className="size-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => loadGenrePlaylist(currentGenre, i)}
+                          className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                          title="Play now"
+                        >
+                          <Play className="size-3.5 fill-current" />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </motion.div>
           )}
@@ -729,10 +829,10 @@ export function MusicPlayer() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col flex-1 h-[280px]"
+              className="flex flex-col flex-1 h-[270px] justify-between"
             >
               {/* Search Input Field */}
-              <form onSubmit={handleSearchSubmit} className="flex gap-1.5 mb-2">
+              <form onSubmit={handleSearchSubmit} className="flex gap-1.5 mb-2 shrink-0">
                 <div className="relative flex-1">
                   <Search className="absolute left-2.5 top-2.5 size-3.5 text-neutral-400" />
                   <input
@@ -766,7 +866,7 @@ export function MusicPlayer() {
               </form>
 
               {/* Quick Preset Search Chips */}
-              <div className="flex items-center gap-1 pb-2 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1 pb-1.5 overflow-x-auto no-scrollbar shrink-0">
                 {SEARCH_PRESETS.map((preset) => (
                   <button
                     key={preset}
@@ -816,7 +916,7 @@ export function MusicPlayer() {
                           type="button"
                           onClick={() => addSongToQueue(song)}
                           className="p-1 rounded-md text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
-                          title="Add to Up Next queue"
+                          title="Add to queue"
                         >
                           <Plus className="size-3.5" />
                         </button>
@@ -832,19 +932,19 @@ export function MusicPlayer() {
                     </div>
                   ))
                 ) : isSearching ? (
-                  <div className="flex flex-col items-center justify-center h-36 text-neutral-400 text-xs">
+                  <div className="flex flex-col items-center justify-center h-32 text-neutral-400 text-xs">
                     <Loader2 className="size-6 animate-spin text-emerald-500 mb-2" />
                     <span>Searching JioSaavn catalogue...</span>
                   </div>
                 ) : hasSearched ? (
-                  <div className="flex flex-col items-center justify-center h-36 text-neutral-400 text-xs text-center px-4">
+                  <div className="flex flex-col items-center justify-center h-32 text-neutral-400 text-xs text-center px-4">
                     <Music className="size-6 text-neutral-400 mb-2" />
                     <span>
                       No results found for &ldquo;{searchQuery}&rdquo;. Try another title or artist.
                     </span>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-36 text-neutral-400 text-xs text-center px-4">
+                  <div className="flex flex-col items-center justify-center h-32 text-neutral-400 text-xs text-center px-4">
                     <Sparkles className="size-6 text-emerald-500 mb-2" />
                     <span>
                       Search millions of tracks directly on JioSaavn or pick a top Punjabi artist above.
@@ -863,9 +963,9 @@ export function MusicPlayer() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col flex-1 h-[280px]"
+              className="flex flex-col flex-1 h-[270px] justify-between"
             >
-              <div className="flex items-center justify-between pb-1.5 px-1 text-[11px] font-semibold text-neutral-500">
+              <div className="flex items-center justify-between pb-1.5 px-1 text-[11px] font-semibold text-neutral-500 shrink-0">
                 <span>Playlist Queue ({tracks.length} tracks)</span>
                 <button
                   type="button"
@@ -953,6 +1053,88 @@ export function MusicPlayer() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Docked Mini-Player Bar (Visible when browsing Genres, Search, or Queue) */}
+      {activeTab !== "player" && (
+        <div className="relative mt-2 pt-2 border-t border-neutral-200/70 dark:border-neutral-800/70 shrink-0">
+          {/* Continuous Progress Indicator Line */}
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-neutral-200 dark:bg-neutral-800">
+            <div
+              className="h-full bg-emerald-500 transition-all duration-300"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          <div className="flex items-center justify-between gap-2 p-1.5 rounded-xl bg-neutral-100/90 dark:bg-neutral-900/90 border border-neutral-200/50 dark:border-neutral-800/50">
+            {/* Click to expand Now Playing */}
+            <div
+              onClick={() => setActiveTab("player")}
+              className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group"
+            >
+              <div className="relative size-8 rounded-lg overflow-hidden shrink-0">
+                <Image
+                  src={currentTrack.image || "/images/project-icon.webp"}
+                  alt={currentTrack.title}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold truncate text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors">
+                  {currentTrack.title}
+                </p>
+                <p className="text-[10px] text-neutral-500 truncate">
+                  {currentTrack.artist}
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Playback Transport in Docked Bar */}
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="p-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+                title="Previous track"
+              >
+                <SkipBack className="size-3.5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={togglePlay}
+                className="p-1.5 rounded-full bg-emerald-500 text-white shadow-xs hover:bg-emerald-600 transition-colors cursor-pointer"
+                title={isPlaying ? "Pause" : "Play"}
+              >
+                {isPlaying ? (
+                  <Pause className="size-3 fill-white" />
+                ) : (
+                  <Play className="size-3 fill-white translate-x-0.2" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleNext}
+                className="p-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+                title="Next track"
+              >
+                <SkipForward className="size-3.5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("player")}
+                className="p-1 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors ml-0.5 cursor-pointer"
+                title="Open Full Player"
+              >
+                <Maximize2 className="size-3" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
