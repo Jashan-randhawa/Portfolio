@@ -30,9 +30,9 @@ A high-performance personal portfolio built with **Next.js 15/16 App Router**, *
 - 🌗 **Adaptive Themes** — Seamless Light & Dark mode powered by `next-themes`
 - 🎨 **Visual Polish** — Custom 3D canvas with Three.js (`@react-three/fiber`) & interactive particles (`tsparticles`)
 - 🪄 **Fluid Motion** — Gesture-based spring physics animations and page reveals with `motion`
-- 📱 **Mobile-First & Responsive** — Pixel-perfect layouts crafted for all viewports
-- 🎵 **Spotify Widget** — Theme-aware media integration
-- 🚀 **Next-Gen Speed** — Turbopack builds, Next.js image optimization, Vercel Speed Insights & Analytics
+- 🎵 **JioSaavn Music Lounge** — Custom audio streaming player with DES-ECB media decryption, vinyl turntable animations, live song search, and curated playlists
+- 📱 **Mobile-First & Responsive** — Pixel-perfect layouts crafted for all modern devices
+- 🚀 **Next-Gen Speed** — Turbopack builds, Next.js image optimization, and Vercel Analytics
 
 ---
 

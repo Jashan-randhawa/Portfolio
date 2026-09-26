@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
       { hostname: "cdn.simpleicons.org" },
       { hostname: "c.saavncdn.com" },
       { hostname: "images.saavncdn.com" },
+      { hostname: "static.saavncdn.com" },
     ],
   },
 }

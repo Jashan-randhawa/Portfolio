@@ -213,7 +213,7 @@ const items = [
     title: "Music & Mood",
     description: (
       <span className="text-sm">
-        Stream focus tracks, search any song via JioSaavn, or switch to Spotify.
+        Custom audio player powered by JioSaavn. Stream focus tracks, explore curated playlists, or search any song.
       </span>
     ),
     header: <SkeletonThree />,
