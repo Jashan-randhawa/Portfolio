@@ -22,7 +22,7 @@ const CATEGORIES = [
 export function ProjectCardsCarousel() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
-  const [viewMode, setViewMode] = useState<"grid" | "carousel">("grid")
+  const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel")
 
   const filteredProjects = useMemo(() => {
     return PROJECTS.filter((project) => {
@@ -113,6 +113,19 @@ export function ProjectCardsCarousel() {
             <div className="flex items-center bg-neutral-100 dark:bg-neutral-800 p-0.5 rounded-lg border border-neutral-200/60 dark:border-neutral-700/60 text-xs">
               <button
                 type="button"
+                onClick={() => setViewMode("carousel")}
+                className={`px-2.5 py-1 rounded-md font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                  viewMode === "carousel"
+                    ? "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-xs"
+                    : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                }`}
+                title="Slider / Carousel view"
+              >
+                <SlidersHorizontal className="size-3.5" />
+                <span>Slider</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => setViewMode("grid")}
                 className={`px-2.5 py-1 rounded-md font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
                   viewMode === "grid"
@@ -123,19 +136,6 @@ export function ProjectCardsCarousel() {
               >
                 <LayoutGrid className="size-3.5" />
                 <span>Grid</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("carousel")}
-                className={`px-2.5 py-1 rounded-md font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  viewMode === "carousel"
-                    ? "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-xs"
-                    : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
-                }`}
-                title="Carousel view"
-              >
-                <SlidersHorizontal className="size-3.5" />
-                <span>Carousel</span>
               </button>
             </div>
           </div>
@@ -184,7 +184,10 @@ export function ProjectCardsCarousel() {
             Reset Filters
           </button>
         </div>
-      ) : viewMode === "grid" ? (
+      ) : viewMode === "carousel" ? (
+        /* Apple-style Smooth Horizontal Carousel */
+        <Carousel items={carouselCards} />
+      ) : (
         /* Responsive Grid: 1 col on mobile, 2 cols on md, 3 cols on xl */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((card, index) => (
@@ -200,9 +203,6 @@ export function ProjectCardsCarousel() {
             />
           ))}
         </div>
-      ) : (
-        /* Apple-style Smooth Horizontal Carousel */
-        <Carousel items={carouselCards} />
       )}
     </div>
   )
