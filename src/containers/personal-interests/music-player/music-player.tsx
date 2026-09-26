@@ -308,7 +308,21 @@ export function MusicPlayer() {
   const isCurrentLiked = likedSongIds.has(currentTrack.id)
 
   return (
-    <div className="flex flex-col w-full h-full select-none justify-between bg-[#121212] text-white rounded-2xl p-3 sm:p-4 border border-[#282828] shadow-2xl overflow-hidden font-sans">
+    <div className="relative flex flex-col w-full h-full select-none justify-between bg-[#121212] text-white rounded-2xl p-3 sm:p-4 border border-[#282828] shadow-2xl overflow-hidden font-sans">
+      {/* Animated ambient music aura */}
+      <motion.div
+        animate={{
+          scale: isPlaying ? [1, 1.15, 1] : 1,
+          opacity: isPlaying ? [0.15, 0.32, 0.15] : 0.05,
+        }}
+        transition={{
+          duration: 3.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute -top-12 -right-12 size-48 rounded-full bg-[#1ED760] blur-3xl pointer-events-none"
+      />
+
       <audio
         ref={audioRef}
         onTimeUpdate={handleTimeUpdate}
@@ -400,38 +414,100 @@ export function MusicPlayer() {
               transition={{ duration: 0.18 }}
               className="flex flex-col flex-1 justify-between"
             >
-              {/* Spotify Album Art Showcase Card */}
-              <div className="relative flex items-center gap-3.5 p-3 rounded-xl bg-[#181818] border border-[#282828] shadow-lg group">
-                {/* Album Cover Art */}
-                <div className="relative size-24 sm:size-28 shrink-0 rounded-lg overflow-hidden shadow-2xl bg-[#282828]">
-                  <Image
-                    src={currentTrack.image || "/images/project-icon.webp"}
-                    alt={currentTrack.title}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                  {/* Hover Overlay with Green Play Button */}
-                  <div
-                    onClick={togglePlay}
-                    className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+              {/* Spotify Album Art Showcase Card with Spinning Vinyl & Equalizer */}
+              <div className="relative flex items-center gap-3.5 p-3 rounded-xl bg-[#181818] border border-[#282828] shadow-lg group overflow-hidden">
+                {/* Album Cover Art & Animated Spinning Vinyl Disc */}
+                <div className="relative shrink-0 flex items-center">
+                  {/* Vinyl Record Disc (slides out and rotates when playing) */}
+                  <motion.div
+                    animate={
+                      isPlaying
+                        ? { rotate: 360, x: 14 }
+                        : { rotate: 0, x: 0 }
+                    }
+                    transition={
+                      isPlaying
+                        ? {
+                            rotate: { repeat: Infinity, duration: 3.5, ease: "linear" },
+                            x: { duration: 0.4, ease: "easeOut" },
+                          }
+                        : { duration: 0.35, ease: "easeOut" }
+                    }
+                    className="absolute right-0 top-1/2 -translate-y-1/2 size-20 sm:size-22 rounded-full bg-[#0d0d0d] border border-neutral-700/60 shadow-xl flex items-center justify-center pointer-events-none z-0"
+                    style={{
+                      background: "radial-gradient(circle, #262626 20%, #111 50%, #1e1e1e 80%, #080808 100%)",
+                    }}
                   >
-                    <div className="size-10 rounded-full bg-[#1ED760] text-black flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-                      {isPlaying ? (
-                        <Pause className="size-5 fill-black" />
-                      ) : (
-                        <Play className="size-5 fill-black translate-x-0.5" />
-                      )}
+                    {/* Concentric vinyl sound grooves */}
+                    <div className="size-15 sm:size-16 rounded-full border border-neutral-700/40 flex items-center justify-center">
+                      <div className="size-11 sm:size-12 rounded-full border border-neutral-600/30 flex items-center justify-center">
+                        <div className="size-5 sm:size-6 rounded-full bg-[#1ED760] border border-black/40 flex items-center justify-center shadow-inner">
+                          <div className="size-1.5 rounded-full bg-black" />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Album Cover Art Front Sleeve */}
+                  <div className="relative size-22 sm:size-24 shrink-0 rounded-lg overflow-hidden shadow-2xl bg-[#282828] z-10 border border-[#333]">
+                    <Image
+                      src={currentTrack.image || "/images/project-icon.webp"}
+                      alt={currentTrack.title}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                    {/* Hover Overlay with Green Play Button */}
+                    <div
+                      onClick={togglePlay}
+                      className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                    >
+                      <div className="size-9 rounded-full bg-[#1ED760] text-black flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+                        {isPlaying ? (
+                          <Pause className="size-4 fill-black" />
+                        ) : (
+                          <Play className="size-4 fill-black translate-x-0.5" />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Track Details & Heart Like Action */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                <div className="flex-1 min-w-0 flex flex-col justify-center pl-2 z-10">
                   <div className="flex items-center justify-between gap-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#1ED760]">
-                      Spotify Audio
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#1ED760]">
+                        Spotify Audio
+                      </span>
+                      {/* Active Dancing Soundwave Visualizer */}
+                      <div className="flex items-end gap-0.5 h-3 ml-0.5" title="Live audio visualizer">
+                        {[40, 90, 60, 100, 75, 45, 85].map((h, idx) => (
+                          <motion.span
+                            key={idx}
+                            animate={
+                              isPlaying
+                                ? {
+                                    scaleY: [0.25, h / 100, 0.35, (h * 0.8) / 100, 0.25],
+                                  }
+                                : { scaleY: 0.2 }
+                            }
+                            transition={
+                              isPlaying
+                                ? {
+                                    duration: 0.75 + (idx % 3) * 0.15,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: idx * 0.08,
+                                  }
+                                : { duration: 0.3 }
+                            }
+                            className="w-0.5 h-full bg-[#1ED760] rounded-full origin-bottom"
+                          />
+                        ))}
+                      </div>
+                    </div>
+
                     {/* Heart / Like Button */}
                     <button
                       type="button"
@@ -449,12 +525,25 @@ export function MusicPlayer() {
                     </button>
                   </div>
 
-                  <h4
-                    className="text-base sm:text-lg font-bold truncate text-white hover:underline cursor-pointer mt-0.5"
-                    title={currentTrack.title}
-                  >
-                    {currentTrack.title}
-                  </h4>
+                  {/* Marquee Song Title */}
+                  <div className="overflow-hidden mt-0.5">
+                    <motion.h4
+                      animate={
+                        isPlaying && currentTrack.title.length > 18
+                          ? { x: [0, -30, 0] }
+                          : { x: 0 }
+                      }
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="text-sm sm:text-base font-bold whitespace-nowrap text-white hover:underline cursor-pointer"
+                      title={currentTrack.title}
+                    >
+                      {currentTrack.title}
+                    </motion.h4>
+                  </div>
 
                   <p
                     className="text-xs text-[#B3B3B3] hover:text-white hover:underline cursor-pointer truncate mt-0.5"
@@ -471,6 +560,56 @@ export function MusicPlayer() {
                       {currentTrack.album} {currentTrack.year ? `• ${currentTrack.year}` : ""}
                     </span>
                   )}
+                </div>
+              </div>
+
+              {/* Moving Horizontal Track Strip / Mini Song Carousel */}
+              <div className="my-1.5 px-0.5">
+                <div className="flex items-center justify-between mb-1 text-[10px] text-[#B3B3B3] px-1 font-semibold">
+                  <span className="flex items-center gap-1.5">
+                    <span className="size-1.5 rounded-full bg-[#1ED760] animate-pulse" />
+                    <span>Quick Select • {currentGenre.name}</span>
+                  </span>
+                  <span className="font-mono text-[9px] text-[#888]">
+                    {currentTrackIndex + 1} / {tracks.length}
+                  </span>
+                </div>
+                <div
+                  className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  {tracks.map((song, i) => {
+                    const isThisActive = currentTrackIndex === i
+                    return (
+                      <button
+                        key={`${song.id}-${i}`}
+                        type="button"
+                        onClick={() => {
+                          setCurrentTrackIndex(i)
+                          setIsPlaying(true)
+                        }}
+                        className={`flex items-center gap-2 px-2 py-1 rounded-lg shrink-0 transition-all cursor-pointer border ${
+                          isThisActive
+                            ? "bg-[#282828] border-[#1ED760] text-[#1ED760] shadow-sm shadow-[#1ED760]/20 scale-102"
+                            : "bg-[#181818] border-[#242424] text-neutral-300 hover:bg-[#222] hover:text-white"
+                        }`}
+                        title={`Play ${song.title}`}
+                      >
+                        <div className="relative size-6 rounded overflow-hidden shrink-0 bg-[#282828]">
+                          <Image
+                            src={song.image || "/images/project-icon.webp"}
+                            alt={song.title}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                        <span className="text-[11px] font-semibold max-w-[90px] truncate text-left">
+                          {song.title}
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
 

@@ -116,18 +116,34 @@ const SkeletonTwo = () => {
   )
 }
 const SkeletonThree = () => {
-  const variants = {
-    initial: {
-      backgroundPosition: "0 50%",
-    },
-    animate: {
-      backgroundPosition: ["0, 50%", "100% 50%", "0 50%"],
-    },
-  }
   return (
-    <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-lg flex-col">
+    <motion.div
+      initial="initial"
+      animate="animate"
+      whileHover="hover"
+      className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col rounded-lg relative overflow-hidden"
+    >
       <MusicPlayer />
-    </div>
+      <Pointer className="fill-[#1ED760]">
+        <motion.div
+          animate={{
+            scale: [0.9, 1.12, 0.9],
+            rotate: [0, 6, -6, 0],
+            y: [0, -4, 0],
+          }}
+          transition={{
+            duration: 2.2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/90 border border-[#1ED760]/40 text-[#1ED760] text-xs font-bold shadow-xl backdrop-blur-md whitespace-nowrap"
+        >
+          <span className="text-sm">🎧</span>
+          <span>Punjabi Beats</span>
+          <span className="inline-block animate-pulse">🎵</span>
+        </motion.div>
+      </Pointer>
+    </motion.div>
   )
 }
 const SkeletonFour = () => {
