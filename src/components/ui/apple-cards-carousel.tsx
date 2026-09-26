@@ -280,7 +280,8 @@ export const Carousel = ({
 
         {/* Horizontal Carousel Track */}
         <div
-          className="flex w-full overflow-x-auto overscroll-x-contain py-4 pb-4 scroll-smooth no-scrollbar snap-x snap-proximity"
+          className="flex w-full overflow-x-auto overscroll-x-contain py-4 pb-4 scroll-smooth no-scrollbar snap-x snap-proximity [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           ref={carouselRef}
           onScroll={handleScroll}
           onMouseEnter={() => setIsHovered(true)}

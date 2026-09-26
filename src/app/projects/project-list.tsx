@@ -142,7 +142,10 @@ export function ProjectCardsCarousel() {
         </div>
 
         {/* Category Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+        <div
+          className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.id
             return (

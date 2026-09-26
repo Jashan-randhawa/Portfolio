@@ -640,7 +640,10 @@ export function MusicPlayer() {
               className="flex flex-col flex-1 h-[270px] justify-between"
             >
               {/* Spotify Playlist Chips */}
-              <div className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0">
+              <div
+                className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
                 {PUNJABI_GENRES.map((genre) => {
                   const isSelected = genre.id === selectedGenreId
                   return (
@@ -837,7 +840,10 @@ export function MusicPlayer() {
               </form>
 
               {/* Quick Artist Filter Pills */}
-              <div className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0">
+              <div
+                className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
                 {SEARCH_PRESETS.map((preset) => (
                   <button
                     key={preset}
