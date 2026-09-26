@@ -8,9 +8,9 @@ import type { Metadata } from "next"
 import { Exo_2 } from "next/font/google"
 
 const exo2 = Exo_2({
-  subsets: ["latin", "vietnamese", "cyrillic"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
   variable: "--font-exo2",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
