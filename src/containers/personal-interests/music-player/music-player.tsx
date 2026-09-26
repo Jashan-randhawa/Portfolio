@@ -1031,15 +1031,9 @@ export function MusicPlayer() {
               {/* Playlist Header Card with Play All CTA */}
               <div className="flex items-center justify-between p-2.5 mb-1.5 rounded-xl bg-[#181818] border border-[#282828] shrink-0">
                 <div className="min-w-0 pr-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[9px] uppercase font-bold text-[#B3B3B3] tracking-wider">
-                      Playlist
-                    </span>
-                    <span className="flex items-center gap-1 text-[9px] text-[#1ED760] font-semibold">
-                      <span className="size-1.5 rounded-full bg-[#1ED760] animate-pulse" />
-                      <span>Circular (5s)</span>
-                    </span>
-                  </div>
+                  <span className="text-[9px] uppercase font-bold text-[#B3B3B3] tracking-wider">
+                    Playlist
+                  </span>
                   <h5 className="text-xs sm:text-sm font-extrabold text-white truncate">
                     {currentGenre.name}
                   </h5>
@@ -1213,10 +1207,6 @@ export function MusicPlayer() {
               {/* Quick Artist Filter Header */}
               <div className="flex items-center justify-between px-1 mb-1 text-[10px] text-[#B3B3B3] font-semibold">
                 <span>Top Punjabi Artists</span>
-                <span className="flex items-center gap-1 text-[9px] text-[#1ED760]">
-                  <span className="size-1.5 rounded-full bg-[#1ED760] animate-pulse" />
-                  <span>Circular (5s)</span>
-                </span>
               </div>
 
               {/* Quick Artist Filter Pills (Auto-sliding circularly every 5 seconds) */}

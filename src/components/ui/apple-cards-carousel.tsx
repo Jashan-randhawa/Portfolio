@@ -21,7 +21,6 @@ import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "motion/react"
 import Image, { ImageProps } from "next/image"
 import { useOutsideClick } from "@/hooks/use-outside-click"
-import { Play, Pause } from "lucide-react"
 
 interface CarouselProps {
   items: JSX.Element[]
@@ -181,11 +180,6 @@ export const Carousel = ({
     scrollToCard(index)
   }
 
-  // Circular progress SVG values
-  const radius = 9
-  const circumference = 2 * Math.PI * radius
-  const strokeOffset = circumference - (progress / 100) * circumference
-
   return (
     <CarouselContext.Provider
       value={{
@@ -196,86 +190,28 @@ export const Carousel = ({
       }}
     >
       <div className="relative w-full">
-        {/* Controls Bar: Circular Auto-Slide Badge, Slide Counter & Circular Arrows */}
-        <div className="flex items-center justify-between gap-3 mb-4 px-2">
-          {/* Circular Countdown Progress Badge & Play/Pause */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setIsPlaying((prev) => !prev)}
-              className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700/80 border border-neutral-200/80 dark:border-neutral-700/80 transition-all cursor-pointer text-xs font-medium text-neutral-700 dark:text-neutral-300 shadow-xs"
-              title={isPlaying ? "Click to pause 5s circular slide" : "Click to resume 5s circular slide"}
-            >
-              <div className="relative size-5 flex items-center justify-center">
-                {/* Background Ring */}
-                <svg className="size-full -rotate-90" viewBox="0 0 24 24">
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r={radius}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    className="text-neutral-300 dark:text-neutral-700"
-                  />
-                  {/* Animated Circular Progress Ring */}
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r={radius}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={strokeOffset}
-                    className="text-emerald-500 transition-[stroke-dashoffset] duration-75 ease-linear"
-                  />
-                </svg>
-                {/* Play / Pause Icon */}
-                <span className="absolute inset-0 flex items-center justify-center">
-                  {isPlaying && !isHovered && !isModalOpen ? (
-                    <Pause className="size-2 text-emerald-500 fill-emerald-500" />
-                  ) : (
-                    <Play className="size-2 text-neutral-500 ml-0.5 fill-neutral-500" />
-                  )}
-                </span>
-              </div>
-              <span className="font-semibold text-[11px] tracking-wide">
-                {isPlaying
-                  ? isHovered
-                    ? "Paused (Hover)"
-                    : isModalOpen
-                    ? "Paused (Modal)"
-                    : "5s Circular Slide"
-                  : "Paused"}
-              </span>
-            </button>
-          </div>
+        {/* Controls Bar: Slide Counter & Circular Arrows */}
+        <div className="flex items-center justify-end gap-2 mb-4 px-2">
+          <span className="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400 mr-1 hidden sm:inline-block">
+            {String(currentIndex + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
+          </span>
 
-          {/* Slide Counter & Circular Navigation Arrows */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400 mr-1 hidden sm:inline-block">
-              {String(currentIndex + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
-            </span>
-
-            <button
-              className="size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-all shadow-xs cursor-pointer active:scale-95"
-              onClick={scrollLeft}
-              title="Previous slide (loops circularly)"
-              aria-label="Previous slide"
-            >
-              <IconArrowNarrowLeft className="size-5" />
-            </button>
-            <button
-              className="size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-all shadow-xs cursor-pointer active:scale-95"
-              onClick={scrollRight}
-              title="Next slide (loops circularly)"
-              aria-label="Next slide"
-            >
-              <IconArrowNarrowRight className="size-5" />
-            </button>
-          </div>
+          <button
+            className="size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-all shadow-xs cursor-pointer active:scale-95"
+            onClick={scrollLeft}
+            title="Previous slide (loops circularly)"
+            aria-label="Previous slide"
+          >
+            <IconArrowNarrowLeft className="size-5" />
+          </button>
+          <button
+            className="size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-all shadow-xs cursor-pointer active:scale-95"
+            onClick={scrollRight}
+            title="Next slide (loops circularly)"
+            aria-label="Next slide"
+          >
+            <IconArrowNarrowRight className="size-5" />
+          </button>
         </div>
 
         {/* Horizontal Carousel Track */}
