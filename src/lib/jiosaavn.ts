@@ -1,4 +1,5 @@
 import forge from "node-forge"
+import { PUNJABI_GENRES } from "@/data/punjabi-genres"
 
 export interface JioSaavnSong {
   id: string
@@ -18,6 +19,8 @@ export interface MoodCategory {
   badge: string
   tracks: JioSaavnSong[]
 }
+
+export { PUNJABI_GENRES }
 
 export function decodeHtmlEntities(str: string): string {
   if (!str) return ""
@@ -163,208 +166,14 @@ export async function getSongById(id: string): Promise<JioSaavnSong | null> {
 }
 
 /**
- * Curated initial focus playlist with popular verified tracks
+ * Curated 5 Punjabi Genres (100 songs total from the curated PDF)
  */
-export const DEFAULT_TRACKS: JioSaavnSong[] = [
-  {
-    id: "YiVML4Zo",
-    title: "Gehra Hua",
-    artist: "Shashwat Sachdev, Arijit Singh",
-    album: "Dhurandhar",
-    year: "2025",
-    duration: 245,
-    image:
-      "https://c.saavncdn.com/450/Gehra-Hua-From-Dhurandhar-Hindi-2025-20251205154217-500x500.jpg",
-    streamUrl:
-      "https://aac.saavncdn.com/450/f467e05e2825cec2203546333e0d0550_160.mp4",
-  },
-  {
-    id: "FoOWz-cQ",
-    title: "Cheques",
-    artist: "Shubh",
-    album: "Still Rollin",
-    year: "2023",
-    duration: 183,
-    image:
-      "https://c.saavncdn.com/704/Still-Rollin-Punjabi-2023-20230512121542-500x500.jpg",
-    streamUrl:
-      "https://aac.saavncdn.com/704/1d43cfc150d1aef7c597c2a9bec1fa48_160.mp4",
-  },
-  {
-    id: "396_starboy",
-    title: "Starboy",
-    artist: "The Weeknd, Daft Punk",
-    album: "Starboy",
-    year: "2016",
-    duration: 230,
-    image:
-      "https://c.saavncdn.com/423/Starboy-English-2016-500x500.jpg",
-    streamUrl:
-      "https://aac.saavncdn.com/396/b4e570050007b056c662f2a98c9f28ec_160.mp4",
-  },
-  {
-    id: "rjkrTnma",
-    title: "Kesariya",
-    artist: "Pritam, Arijit Singh",
-    album: "Brahmastra",
-    year: "2022",
-    duration: 268,
-    image:
-      "https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg",
-    streamUrl:
-      "https://aac.saavncdn.com/871/c2febd353f3a076a406fa37510f31f9f_160.mp4",
-  },
-  {
-    id: "xzUVX40K",
-    title: "Brown Munde",
-    artist: "AP Dhillon, Gurinder Gill",
-    album: "Brown Munde",
-    year: "2020",
-    duration: 268,
-    image:
-      "https://c.saavncdn.com/978/Brown-Munde-Punjabi-2020-20200915201103-500x500.jpg",
-    streamUrl:
-      "https://aac.saavncdn.com/973/76216adb3df5ef476f948891b40efb7a_160.mp4",
-  },
-  {
-    id: "477_elevated",
-    title: "Elevated",
-    artist: "Shubh",
-    album: "Elevated",
-    year: "2022",
-    duration: 200,
-    image:
-      "https://c.saavncdn.com/393/Elevated-Punjabi-2022-20221019084742-500x500.jpg",
-    streamUrl:
-      "https://aac.saavncdn.com/477/e97849f7ed8c692c4e206bef3e286d45_160.mp4",
-  },
-]
+export const CURATED_MOODS: MoodCategory[] = PUNJABI_GENRES
 
 /**
- * Curated Mood & Genre Playlists
+ * Initial curated starter playlist featuring top iconic tracks
  */
-export const CURATED_MOODS: MoodCategory[] = [
-  {
-    id: "focus",
-    name: "Focus & Lo-Fi",
-    description: "Mellow vibes & chillhop beats for deep coding sessions",
-    badge: "🎧 Study",
-    tracks: [
-      {
-        id: "gSXQLipD",
-        title: "Soniye Heriye (LoFi & Chill)",
-        artist: "Definite Music, Saransh Peer",
-        album: "Soniye Heriye (LoFi)",
-        duration: 174,
-        image:
-          "https://c.saavncdn.com/795/Soniye-Heriye-LoFi-Chill-feat-Saransh-Peer--English-2022-20220228224128-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/795/efb02c8292b4b9a463e06aa3da178d16_160.mp4",
-      },
-      {
-        id: "Le6z_EJe",
-        title: "Sun Saathiya (Lofi Mix)",
-        artist: "Sachin-Jigar, Priya Saraiya, L3AD",
-        album: "Lofi Chill Mix",
-        duration: 195,
-        image:
-          "https://c.saavncdn.com/594/Lofi-Chill-Mix-Hindi-2026-20260619115205-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/594/9eee343529313ea8d155226973132f62_160.mp4",
-      },
-      {
-        id: "Rp2sLt2T",
-        title: "Kalank (Lofi Mix)",
-        artist: "Pritam, Arijit Singh, Trosk",
-        album: "Lofi Chill Mix",
-        duration: 279,
-        image:
-          "https://c.saavncdn.com/594/Lofi-Chill-Mix-Hindi-2026-20260619115205-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/594/d9e2baf50714047427c14b9bc4d4e824_160.mp4",
-      },
-    ],
-  },
-  {
-    id: "punjabi",
-    name: "Punjabi Heat",
-    description: "High-octane Punjabi bangers and melodic drill",
-    badge: "🔥 Hype",
-    tracks: [
-      {
-        id: "FoOWz-cQ",
-        title: "Cheques",
-        artist: "Shubh",
-        album: "Still Rollin",
-        duration: 183,
-        image:
-          "https://c.saavncdn.com/704/Still-Rollin-Punjabi-2023-20230512121542-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/704/1d43cfc150d1aef7c597c2a9bec1fa48_160.mp4",
-      },
-      {
-        id: "xzUVX40K",
-        title: "Brown Munde",
-        artist: "AP Dhillon, Gurinder Gill",
-        album: "Brown Munde",
-        duration: 268,
-        image:
-          "https://c.saavncdn.com/978/Brown-Munde-Punjabi-2020-20200915201103-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/973/76216adb3df5ef476f948891b40efb7a_160.mp4",
-      },
-      {
-        id: "477_elevated",
-        title: "Elevated",
-        artist: "Shubh",
-        album: "Elevated",
-        duration: 200,
-        image:
-          "https://c.saavncdn.com/393/Elevated-Punjabi-2022-20221019084742-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/477/e97849f7ed8c692c4e206bef3e286d45_160.mp4",
-      },
-    ],
-  },
-  {
-    id: "trending",
-    name: "Trending Now",
-    description: "Chart-topping hits across languages and genres",
-    badge: "✨ Viral",
-    tracks: [
-      {
-        id: "YiVML4Zo",
-        title: "Gehra Hua",
-        artist: "Shashwat Sachdev, Arijit Singh",
-        album: "Dhurandhar",
-        duration: 245,
-        image:
-          "https://c.saavncdn.com/450/Gehra-Hua-From-Dhurandhar-Hindi-2025-20251205154217-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/450/f467e05e2825cec2203546333e0d0550_160.mp4",
-      },
-      {
-        id: "rjkrTnma",
-        title: "Kesariya",
-        artist: "Pritam, Arijit Singh",
-        album: "Brahmastra",
-        duration: 268,
-        image:
-          "https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/871/c2febd353f3a076a406fa37510f31f9f_160.mp4",
-      },
-      {
-        id: "396_starboy",
-        title: "Starboy",
-        artist: "The Weeknd, Daft Punk",
-        album: "Starboy",
-        duration: 230,
-        image:
-          "https://c.saavncdn.com/423/Starboy-English-2016-500x500.jpg",
-        streamUrl:
-          "https://aac.saavncdn.com/396/b4e570050007b056c662f2a98c9f28ec_160.mp4",
-      },
-    ],
-  },
+export const DEFAULT_TRACKS: JioSaavnSong[] = [
+  ...PUNJABI_GENRES[0].tracks.slice(0, 4), // Bhangra highlights
+  ...PUNJABI_GENRES[2].tracks.slice(0, 4), // Hip-Hop highlights
 ]

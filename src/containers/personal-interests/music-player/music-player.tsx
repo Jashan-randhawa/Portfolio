@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useTransition } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "motion/react"
 import {
@@ -23,12 +23,12 @@ import {
   Music,
   Plus,
   Trash2,
-  Disc3,
   X,
+  Disc3,
 } from "lucide-react"
 import {
   DEFAULT_TRACKS,
-  CURATED_MOODS,
+  PUNJABI_GENRES,
   type JioSaavnSong,
   type MoodCategory,
 } from "@/lib/jiosaavn"
@@ -41,12 +41,16 @@ function formatTime(seconds: number): string {
 }
 
 const SEARCH_PRESETS = [
-  "Lo-Fi Beats",
-  "Arijit Singh",
-  "Shubh",
+  "Sidhu Moose Wala",
   "Diljit Dosanjh",
-  "The Weeknd",
+  "Karan Aujla",
+  "Shubh",
   "AP Dhillon",
+  "Guru Randhawa",
+  "Ammy Virk",
+  "Nooran Sisters",
+  "Satinder Sartaaj",
+  "Daler Mehndi",
 ]
 
 export function MusicPlayer() {
@@ -62,10 +66,15 @@ export function MusicPlayer() {
   const [isShuffle, setIsShuffle] = useState(false)
   const [repeatMode, setRepeatMode] = useState<"off" | "all" | "one">("all")
 
-  // Navigation tabs: player (Now Playing), search, queue, moods
+  // Navigation tabs: player (Now Playing), genres (5 Punjabi Genres), search, queue
   const [activeTab, setActiveTab] = useState<
-    "player" | "search" | "queue" | "moods"
+    "player" | "genres" | "search" | "queue"
   >("player")
+
+  // Active selected genre in the Genres tab
+  const [selectedGenreId, setSelectedGenreId] = useState<string>(
+    PUNJABI_GENRES[0]?.id || "bhangra"
+  )
 
   // Search state
   const [searchQuery, setSearchQuery] = useState("")
@@ -75,6 +84,8 @@ export function MusicPlayer() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const currentTrack = tracks[currentTrackIndex] || DEFAULT_TRACKS[0]
+  const currentGenre =
+    PUNJABI_GENRES.find((g) => g.id === selectedGenreId) || PUNJABI_GENRES[0]
 
   useEffect(() => {
     setMounted(true)
@@ -82,7 +93,7 @@ export function MusicPlayer() {
 
   // Sync audio source when track changes
   useEffect(() => {
-    if (audioRef.current && currentTrack) {
+    if (audioRef.current && currentTrack?.streamUrl) {
       audioRef.current.src = currentTrack.streamUrl
       if (isPlaying) {
         audioRef.current
@@ -190,7 +201,7 @@ export function MusicPlayer() {
   const toggleMute = () => {
     if (isMuted) {
       setIsMuted(false)
-      setVolume(previousVolume || 0.8)
+      setVolume(previousVolume || 0.85)
     } else {
       setPreviousVolume(volume)
       setIsMuted(true)
@@ -263,9 +274,9 @@ export function MusicPlayer() {
     }
   }
 
-  const loadMoodPlaylist = (mood: MoodCategory) => {
-    setTracks(mood.tracks)
-    setCurrentTrackIndex(0)
+  const loadGenrePlaylist = (genre: MoodCategory, songIndex = 0) => {
+    setTracks(genre.tracks)
+    setCurrentTrackIndex(songIndex)
     setIsPlaying(true)
     setActiveTab("player")
   }
@@ -290,14 +301,14 @@ export function MusicPlayer() {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200">
             <Radio className="size-3.5 text-emerald-500 animate-pulse" />
-            <span className="tracking-tight">JioSaavn Lounge</span>
+            <span className="tracking-tight">JioSaavn Punjabi</span>
           </div>
 
           {/* Equalizer animation when playing */}
           {isPlaying && (
             <div
               className="flex items-end gap-0.5 h-3 ml-0.5"
-              title="Streaming high fidelity audio"
+              title="Streaming 160kbps AAC direct audio"
             >
               <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:0ms]" />
               <span className="w-0.5 h-2/3 bg-emerald-500 rounded-full animate-bounce [animation-delay:150ms]" />
@@ -322,15 +333,15 @@ export function MusicPlayer() {
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab("moods")}
+            onClick={() => setActiveTab("genres")}
             className={`px-2 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
-              activeTab === "moods"
+              activeTab === "genres"
                 ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
                 : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
             }`}
           >
-            <Sparkles className="size-2.5" />
-            <span>Moods</span>
+            <Disc3 className="size-2.5" />
+            <span>Genres</span>
           </button>
           <button
             type="button"
@@ -603,54 +614,106 @@ export function MusicPlayer() {
             </motion.div>
           )}
 
-          {/* TAB 2: CURATED MOODS */}
-          {activeTab === "moods" && (
+          {/* TAB 2: PUNJABI GENRES (5 Genres x 20 Songs each) */}
+          {activeTab === "genres" && (
             <motion.div
-              key="moods"
+              key="genres"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
               className="flex flex-col flex-1 h-[280px]"
             >
-              <div className="pb-2 px-1">
-                <span className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400">
-                  Select a mood to instantly update the player queue:
-                </span>
+              {/* Genre Selector Pills */}
+              <div className="flex items-center gap-1 pb-2 overflow-x-auto no-scrollbar">
+                {PUNJABI_GENRES.map((genre) => {
+                  const isSelected = genre.id === selectedGenreId
+                  return (
+                    <button
+                      key={genre.id}
+                      type="button"
+                      onClick={() => setSelectedGenreId(genre.id)}
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all whitespace-nowrap cursor-pointer flex items-center gap-1 ${
+                        isSelected
+                          ? "bg-emerald-500 text-white font-semibold shadow-xs"
+                          : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                      }`}
+                    >
+                      <span>{genre.badge}</span>
+                      <span>({genre.tracks.length})</span>
+                    </button>
+                  )
+                })}
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-2 pr-1 no-scrollbar">
-                {CURATED_MOODS.map((mood) => (
+              {/* Genre Header & Play All CTA */}
+              <div className="flex items-center justify-between p-2 mb-1.5 rounded-xl bg-neutral-100/80 dark:bg-neutral-800/80">
+                <div className="min-w-0 pr-2">
+                  <h5 className="text-xs font-bold text-neutral-900 dark:text-neutral-100 truncate">
+                    {currentGenre.name}
+                  </h5>
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
+                    {currentGenre.description}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => loadGenrePlaylist(currentGenre, 0)}
+                  className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-emerald-500 text-white flex items-center gap-1 hover:bg-emerald-600 transition-colors shrink-0 shadow-xs cursor-pointer"
+                >
+                  <Play className="size-3 fill-white" />
+                  <span>Play All</span>
+                </button>
+              </div>
+
+              {/* List of 20 songs in this genre */}
+              <div className="flex-1 overflow-y-auto space-y-1 pr-1 no-scrollbar">
+                {currentGenre.tracks.map((song, i) => (
                   <div
-                    key={mood.id}
-                    onClick={() => loadMoodPlaylist(mood)}
-                    className="flex flex-col p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900/90 border border-neutral-200/70 dark:border-neutral-800/70 hover:border-emerald-500/50 hover:bg-emerald-50/20 dark:hover:bg-emerald-950/20 transition-all cursor-pointer group"
+                    key={`${song.id}-${i}`}
+                    className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors group"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs">{mood.badge}</span>
-                        <h5 className="text-xs font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors">
-                          {mood.name}
-                        </h5>
-                      </div>
+                    <span className="text-[10px] font-mono text-neutral-400 w-4 text-center shrink-0">
+                      {i + 1}
+                    </span>
+                    <div className="relative size-8 rounded-lg overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-800">
+                      <Image
+                        src={song.image || "/images/project-icon.webp"}
+                        alt={song.title}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                    <div
+                      className="flex-1 min-w-0 cursor-pointer"
+                      onClick={() => loadGenrePlaylist(currentGenre, i)}
+                    >
+                      <p className="text-xs font-semibold truncate text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors">
+                        {song.title}
+                      </p>
+                      <p className="text-[10px] text-neutral-500 truncate">
+                        {song.artist}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
                       <button
                         type="button"
-                        className="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-emerald-500 text-white flex items-center gap-1 group-hover:scale-105 transition-transform"
+                        onClick={() => addSongToQueue(song)}
+                        className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                        title="Add to queue"
                       >
-                        <Play className="size-2.5 fill-white" />
-                        <span>Play</span>
+                        <Plus className="size-3.5" />
                       </button>
-                    </div>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1">
-                      {mood.description}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-neutral-200/40 dark:border-neutral-800/40 text-[10px] text-neutral-400">
-                      <span>{mood.tracks.length} tracks</span>
-                      <span>•</span>
-                      <span className="truncate">
-                        Includes:{" "}
-                        {mood.tracks.map((t) => t.title).join(", ")}
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => loadGenrePlaylist(currentGenre, i)}
+                        className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                        title="Play now"
+                      >
+                        <Play className="size-3.5 fill-current" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -674,7 +737,7 @@ export function MusicPlayer() {
                   <Search className="absolute left-2.5 top-2.5 size-3.5 text-neutral-400" />
                   <input
                     type="text"
-                    placeholder="Search JioSaavn (e.g. Arijit, Diljit, Lo-Fi)..."
+                    placeholder="Search Punjabi songs or artists..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-emerald-500"
@@ -776,13 +839,15 @@ export function MusicPlayer() {
                 ) : hasSearched ? (
                   <div className="flex flex-col items-center justify-center h-36 text-neutral-400 text-xs text-center px-4">
                     <Music className="size-6 text-neutral-400 mb-2" />
-                    <span>No results found for &ldquo;{searchQuery}&rdquo;. Try another title or artist.</span>
+                    <span>
+                      No results found for &ldquo;{searchQuery}&rdquo;. Try another title or artist.
+                    </span>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-36 text-neutral-400 text-xs text-center px-4">
                     <Sparkles className="size-6 text-emerald-500 mb-2" />
                     <span>
-                      Search millions of songs directly from JioSaavn. Click any song to play instantly or add to your queue.
+                      Search millions of tracks directly on JioSaavn or pick a top Punjabi artist above.
                     </span>
                   </div>
                 )}

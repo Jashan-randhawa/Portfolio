@@ -213,7 +213,7 @@ const items = [
     title: "Music & Mood",
     description: (
       <span className="text-sm">
-        Custom audio player powered by JioSaavn. Stream focus tracks, explore curated playlists, or search any song.
+        Custom JioSaavn audio player featuring 100 Punjabi songs across 5 genres (Bhangra, Motivational, Hip-Hop, Sufi & Folk) with live search.
       </span>
     ),
     header: <SkeletonThree />,
