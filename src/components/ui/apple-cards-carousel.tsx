@@ -21,10 +21,13 @@ import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "motion/react"
 import Image, { ImageProps } from "next/image"
 import { useOutsideClick } from "@/hooks/use-outside-click"
+import { Play, Pause } from "lucide-react"
 
 interface CarouselProps {
   items: JSX.Element[]
   initialScroll?: number
+  autoSlideInterval?: number
+  autoSlide?: boolean
 }
 
 export type CardType = {
@@ -41,91 +44,251 @@ export type CardType = {
 export const CarouselContext = createContext<{
   onCardClose: (index: number) => void
   currentIndex: number
+  isModalOpen?: boolean
+  setIsModalOpen?: (open: boolean) => void
 }>({
   onCardClose: () => {},
   currentIndex: 0,
+  isModalOpen: false,
+  setIsModalOpen: () => {},
 })
 
-export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
-  const carouselRef = React.useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = React.useState(false)
-  const [canScrollRight, setCanScrollRight] = React.useState(true)
+export const Carousel = ({
+  items,
+  initialScroll = 0,
+  autoSlideInterval = 5000,
+  autoSlide = true,
+}: CarouselProps) => {
+  const carouselRef = useRef<HTMLDivElement>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(autoSlide)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [progress, setProgress] = useState(0)
+
+  const totalItems = items.length
 
   useEffect(() => {
     if (carouselRef.current) {
       carouselRef.current.scrollLeft = initialScroll
-      checkScrollability()
     }
   }, [initialScroll])
 
-  const checkScrollability = () => {
-    if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
-      setCanScrollLeft(scrollLeft > 0)
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1)
-    }
-  }
+  // Scroll to target card index smoothly
+  const scrollToCard = useCallback((index: number) => {
+    if (!carouselRef.current || totalItems === 0) return
+    const track = carouselRef.current
+    const targetIdx = Math.max(0, Math.min(index, totalItems - 1))
 
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -360, behavior: "smooth" })
+    if (targetIdx === 0) {
+      track.scrollTo({ left: 0, behavior: "smooth" })
+      setCurrentIndex(0)
+      return
     }
-  }
 
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 360, behavior: "smooth" })
-    }
-  }
+    const cardElements = track.querySelectorAll<HTMLElement>(".carousel-card-item")
+    if (cardElements[targetIdx]) {
+      const targetCard = cardElements[targetIdx]
+      const trackRect = track.getBoundingClientRect()
+      const cardRect = targetCard.getBoundingClientRect()
+      const offset = cardRect.left - trackRect.left
 
-  const handleCardClose = (index: number) => {
-    if (carouselRef.current) {
-      const cardWidth = isMobile() ? 320 : 440
-      const gap = isMobile() ? 16 : 24
-      const scrollPosition = (cardWidth + gap) * index
-      carouselRef.current.scrollTo({
-        left: scrollPosition,
+      track.scrollBy({
+        left: offset,
         behavior: "smooth",
       })
-      setCurrentIndex(index)
+      setCurrentIndex(targetIdx)
     }
+  }, [totalItems])
+
+  // Circular navigation: Next (wraps circularly to first card at the end)
+  const scrollRight = useCallback(() => {
+    if (totalItems <= 1) return
+    const nextIdx = (currentIndex + 1) % totalItems
+    scrollToCard(nextIdx)
+    setProgress(0)
+  }, [currentIndex, totalItems, scrollToCard])
+
+  // Circular navigation: Prev (wraps circularly to last card at the beginning)
+  const scrollLeft = useCallback(() => {
+    if (totalItems <= 1) return
+    const prevIdx = (currentIndex - 1 + totalItems) % totalItems
+    scrollToCard(prevIdx)
+    setProgress(0)
+  }, [currentIndex, totalItems, scrollToCard])
+
+  // Track manual scrolling to keep currentIndex synchronized
+  const handleScroll = useCallback(() => {
+    if (!carouselRef.current || totalItems === 0) return
+    const track = carouselRef.current
+    const cardElements = track.querySelectorAll<HTMLElement>(".carousel-card-item")
+    if (cardElements.length === 0) return
+
+    const trackLeft = track.getBoundingClientRect().left + 80
+    let closestIndex = 0
+    let minDiff = Infinity
+
+    cardElements.forEach((el, idx) => {
+      const diff = Math.abs(el.getBoundingClientRect().left - trackLeft)
+      if (diff < minDiff) {
+        minDiff = diff
+        closestIndex = idx
+      }
+    })
+
+    if (closestIndex !== currentIndex) {
+      setCurrentIndex(closestIndex)
+    }
+  }, [totalItems, currentIndex])
+
+  // Auto-slide: 5-second circular interval with 50ms smooth tick updates
+  useEffect(() => {
+    if (!isPlaying || isHovered || isModalOpen || totalItems <= 1) {
+      return
+    }
+
+    const TICK_INTERVAL = 50
+    const increment = (TICK_INTERVAL / autoSlideInterval) * 100
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        const next = prev + increment
+        if (next >= 100) {
+          scrollRight()
+          return 0
+        }
+        return next
+      })
+    }, TICK_INTERVAL)
+
+    return () => clearInterval(timer)
+  }, [isPlaying, isHovered, isModalOpen, totalItems, autoSlideInterval, scrollRight])
+
+  // Pause when browser tab is inactive
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.hidden) {
+        setIsPlaying(false)
+      } else {
+        setIsPlaying(true)
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibility)
+    return () => document.removeEventListener("visibilitychange", handleVisibility)
+  }, [])
+
+  const handleCardClose = (index: number) => {
+    scrollToCard(index)
   }
 
-  const isMobile = () => {
-    return typeof window !== "undefined" && window.innerWidth < 768
-  }
+  // Circular progress SVG values
+  const radius = 9
+  const circumference = 2 * Math.PI * radius
+  const strokeOffset = circumference - (progress / 100) * circumference
 
   return (
     <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
+      value={{
+        onCardClose: handleCardClose,
+        currentIndex,
+        isModalOpen,
+        setIsModalOpen,
+      }}
     >
       <div className="relative w-full">
-        {/* Navigation Arrows */}
-        <div className="flex justify-end gap-2 mb-4 px-2">
-          <button
-            className="size-9 md:size-10 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
-            onClick={scrollLeft}
-            disabled={!canScrollLeft}
-            title="Scroll left"
-          >
-            <IconArrowNarrowLeft className="size-5 text-neutral-700 dark:text-neutral-200" />
-          </button>
-          <button
-            className="size-9 md:size-10 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
-            onClick={scrollRight}
-            disabled={!canScrollRight}
-            title="Scroll right"
-          >
-            <IconArrowNarrowRight className="size-5 text-neutral-700 dark:text-neutral-200" />
-          </button>
+        {/* Controls Bar: Circular Auto-Slide Badge, Slide Counter & Circular Arrows */}
+        <div className="flex items-center justify-between gap-3 mb-4 px-2">
+          {/* Circular Countdown Progress Badge & Play/Pause */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsPlaying((prev) => !prev)}
+              className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700/80 border border-neutral-200/80 dark:border-neutral-700/80 transition-all cursor-pointer text-xs font-medium text-neutral-700 dark:text-neutral-300 shadow-xs"
+              title={isPlaying ? "Click to pause 5s circular slide" : "Click to resume 5s circular slide"}
+            >
+              <div className="relative size-5 flex items-center justify-center">
+                {/* Background Ring */}
+                <svg className="size-full -rotate-90" viewBox="0 0 24 24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r={radius}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    className="text-neutral-300 dark:text-neutral-700"
+                  />
+                  {/* Animated Circular Progress Ring */}
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r={radius}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeOffset}
+                    className="text-emerald-500 transition-[stroke-dashoffset] duration-75 ease-linear"
+                  />
+                </svg>
+                {/* Play / Pause Icon */}
+                <span className="absolute inset-0 flex items-center justify-center">
+                  {isPlaying && !isHovered && !isModalOpen ? (
+                    <Pause className="size-2 text-emerald-500 fill-emerald-500" />
+                  ) : (
+                    <Play className="size-2 text-neutral-500 ml-0.5 fill-neutral-500" />
+                  )}
+                </span>
+              </div>
+              <span className="font-semibold text-[11px] tracking-wide">
+                {isPlaying
+                  ? isHovered
+                    ? "Paused (Hover)"
+                    : isModalOpen
+                    ? "Paused (Modal)"
+                    : "5s Circular Slide"
+                  : "Paused"}
+              </span>
+            </button>
+          </div>
+
+          {/* Slide Counter & Circular Navigation Arrows */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400 mr-1 hidden sm:inline-block">
+              {String(currentIndex + 1).padStart(2, "0")} / {String(totalItems).padStart(2, "0")}
+            </span>
+
+            <button
+              className="size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-all shadow-xs cursor-pointer active:scale-95"
+              onClick={scrollLeft}
+              title="Previous slide (loops circularly)"
+              aria-label="Previous slide"
+            >
+              <IconArrowNarrowLeft className="size-5" />
+            </button>
+            <button
+              className="size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-all shadow-xs cursor-pointer active:scale-95"
+              onClick={scrollRight}
+              title="Next slide (loops circularly)"
+              aria-label="Next slide"
+            >
+              <IconArrowNarrowRight className="size-5" />
+            </button>
+          </div>
         </div>
 
         {/* Horizontal Carousel Track */}
         <div
-          className="flex w-full overflow-x-auto overscroll-x-contain py-4 pb-8 scroll-smooth no-scrollbar"
+          className="flex w-full overflow-x-auto overscroll-x-contain py-4 pb-4 scroll-smooth no-scrollbar snap-x snap-proximity"
           ref={carouselRef}
-          onScroll={checkScrollability}
+          onScroll={handleScroll}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={() => setIsHovered(true)}
+          onTouchEnd={() => {
+            setTimeout(() => setIsHovered(false), 1500)
+          }}
         >
           <div className="flex flex-row justify-start gap-5 md:gap-6 px-2">
             {items.map((item, index) => (
@@ -141,13 +304,40 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                   },
                 }}
                 key={"card" + index}
-                className="shrink-0"
+                className="shrink-0 carousel-card-item snap-start"
               >
                 {item}
               </motion.div>
             ))}
           </div>
         </div>
+
+        {/* Circular Pagination Dots */}
+        {totalItems > 1 && (
+          <div className="flex items-center justify-center gap-1.5 pt-2 pb-2">
+            {items.map((_, idx) => {
+              const isActive = idx === currentIndex
+              return (
+                <button
+                  key={`carousel-dot-${idx}`}
+                  type="button"
+                  onClick={() => {
+                    scrollToCard(idx)
+                    setProgress(0)
+                  }}
+                  className={cn(
+                    "rounded-full transition-all duration-300 cursor-pointer",
+                    isActive
+                      ? "w-6 h-2 bg-emerald-500 shadow-xs shadow-emerald-500/50"
+                      : "w-2 h-2 bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-500"
+                  )}
+                  title={`Go to slide ${idx + 1}`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
     </CarouselContext.Provider>
   )
@@ -174,12 +364,13 @@ export const Card = ({
 }) => {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const { onCardClose } = useContext(CarouselContext)
+  const { onCardClose, setIsModalOpen } = useContext(CarouselContext)
 
   const handleClose = useCallback(() => {
     setOpen(false)
+    setIsModalOpen?.(false)
     onCardClose(index)
-  }, [onCardClose, index])
+  }, [onCardClose, setIsModalOpen, index])
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -202,6 +393,7 @@ export const Card = ({
 
   const handleOpen = () => {
     setOpen(true)
+    setIsModalOpen?.(true)
   }
 
   return (
