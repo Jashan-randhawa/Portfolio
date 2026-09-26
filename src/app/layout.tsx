@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "Jashanpreet Singh | Frontend Developer Portfolio",
     description:
       "Discover Jashanpreet Singh's expertise in Frontend Development, React, and Next.js. View projects, case studies, and technical skills.",
-    url: "https://Jashandev.id.vn",
+    url: "https://jashan2978.vercel.app",
     type: "website",
     images: [
       {

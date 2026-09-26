@@ -9,26 +9,17 @@ export const metadata = {
     title: "Experience | Jashanpreet Singh",
     description:
       "Frontend Developer with hands-on experience in React, MERN Stack, and modern UI/UX design.",
-    url: "https://Jashandev.id.vn/experience",
-    siteName: "Jashandev",
-    images: [
-      // {
-      //   url: "https://kinhdev.id.vn/images/seo/experience-og-image.png",
-      //   width: 1200,
-      //   height: 630,
-      //   alt: "Kinh Dev Experience Page",
-      // },
-    ],
+    url: "https://jashan2978.vercel.app/experience",
+    siteName: "Jashanpreet Singh Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "Experience | Jashanpreet Singh",
     description:
       "Check out Jashanpreet Singh's past work and achievements in frontend development.",
-    //   images: ["https://kinhdev.id.vn/images/seo/experience-og-image.png"],
   },
   alternates: {
-    canonical: "https://Jashandev.id.vn/experience",
+    canonical: "https://jashan2978.vercel.app/experience",
   },
 }
 

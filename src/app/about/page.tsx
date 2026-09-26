@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     title: "About | Jashanpreet Singh",
     description:
       "Discover the story and journey of Jashanpreet Singh in the world of web development.",
-    url: "https://Jashandev.id.vn/about",
-    siteName: "Jashandev",
+    url: "https://jashan2978.vercel.app/about",
+    siteName: "Jashanpreet Singh Portfolio",
     type: "website",
     locale: "en_US",
   },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
       "Learn more about Jashanpreet Singh - Frontend Developer and tech enthusiast.",
   },
   alternates: {
-    canonical: "https://Jashandev.id.vn/about",
+    canonical: "https://jashan2978.vercel.app/about",
   },
 }
 

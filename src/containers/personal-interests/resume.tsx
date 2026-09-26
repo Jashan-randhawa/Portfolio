@@ -44,7 +44,7 @@ export function Resume() {
 
 const resumeCard = {
   author: "Jashanpreet Singh",
-  date: "2025",
+  date: "2026",
   title: "Jashanpreet Singh — Resume",
   description:
     "Frontend Developer & MERN Stack Engineer. React, TypeScript, Node.js, MongoDB, Tailwind CSS.",

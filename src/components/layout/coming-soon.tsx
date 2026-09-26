@@ -67,7 +67,7 @@ export const ComingSoonPage = ({ pageName }: { pageName?: string }) => {
         </TypingAnimation>
 
         <TypingAnimation delay={7000} className="text-muted-foreground">
-          Launching soon at Jashandev.id.vn
+          Launching soon at jashan2978.vercel.app
         </TypingAnimation>
       </Terminal>
 
