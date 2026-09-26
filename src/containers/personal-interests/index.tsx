@@ -8,7 +8,7 @@ import { IconClipboardCopy } from "@tabler/icons-react"
 import { Blocks, Music2, Rss } from "lucide-react"
 import { motion } from "motion/react"
 import { useEffect, useState } from "react"
-import { SpotifyPlaylist } from "./spotify-playlist"
+import { MusicPlayer } from "./music-player"
 import { StackCloud } from "./stack-cloud"
 import { BlurImage } from "@/components/ui/apple-cards-carousel"
 import { LEARNING_RESOURCES } from "@/data/learning-resource"
@@ -125,21 +125,9 @@ const SkeletonThree = () => {
     },
   }
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      variants={variants}
-      transition={{
-        duration: 5,
-        repeat: Number.POSITIVE_INFINITY,
-        repeatType: "reverse",
-      }}
-      className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] rounded-lg bg-dot-black/[0.2] flex-col space-y-2"
-    >
-      <motion.div className="h-full w-full rounded-lg flex-1">
-        <SpotifyPlaylist />
-      </motion.div>
-    </motion.div>
+    <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-lg flex-col">
+      <MusicPlayer />
+    </div>
   )
 }
 const SkeletonFour = () => {
@@ -225,8 +213,7 @@ const items = [
     title: "Music & Mood",
     description: (
       <span className="text-sm">
-        From deep focus to feel-good vibes, I create playlists that fuel my day
-        — &ldquo;Working Energy&ldquo; is one of my favorites.
+        Stream focus tracks, search any song via JioSaavn, or switch to Spotify.
       </span>
     ),
     header: <SkeletonThree />,

@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
       { hostname: "res-console.cloudinary.com" },
       { hostname: "voocgavdbpy2gucg.public.blob.vercel-storage.com" },
       { hostname: "cdn.simpleicons.org" },
+      { hostname: "c.saavncdn.com" },
+      { hostname: "images.saavncdn.com" },
     ],
   },
 }
