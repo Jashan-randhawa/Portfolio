@@ -13,6 +13,9 @@ import {
   IconArrowNarrowLeft,
   IconArrowNarrowRight,
   IconX,
+  IconExternalLink,
+  IconBrandGithub,
+  IconArrowUpRight,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "motion/react"
@@ -24,7 +27,7 @@ interface CarouselProps {
   initialScroll?: number
 }
 
-type Card = {
+export type CardType = {
   src: string
   title: string
   category: string
@@ -60,27 +63,27 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     if (carouselRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
       setCanScrollLeft(scrollLeft > 0)
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1)
     }
   }
 
   const scrollLeft = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -300, behavior: "smooth" })
+      carouselRef.current.scrollBy({ left: -360, behavior: "smooth" })
     }
   }
 
   const scrollRight = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 300, behavior: "smooth" })
+      carouselRef.current.scrollBy({ left: 360, behavior: "smooth" })
     }
   }
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth = isMobile() ? 230 : 384 // (md:w-96)
-      const gap = isMobile() ? 4 : 8
-      const scrollPosition = (cardWidth + gap) * (index + 1)
+      const cardWidth = isMobile() ? 320 : 440
+      const gap = isMobile() ? 16 : 24
+      const scrollPosition = (cardWidth + gap) * index
       carouselRef.current.scrollTo({
         left: scrollPosition,
         behavior: "smooth",
@@ -90,7 +93,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   }
 
   const isMobile = () => {
-    return window && window.innerWidth < 768
+    return typeof window !== "undefined" && window.innerWidth < 768
   }
 
   return (
@@ -98,57 +101,47 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       value={{ onCardClose: handleCardClose, currentIndex }}
     >
       <div className="relative w-full">
-        <div className="flex justify-end gap-2">
+        {/* Navigation Arrows */}
+        <div className="flex justify-end gap-2 mb-4 px-2">
           <button
-            className="relative z-40 md:size-10 size-6 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
+            className="size-9 md:size-10 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
             onClick={scrollLeft}
             disabled={!canScrollLeft}
+            title="Scroll left"
           >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowLeft className="size-5 text-neutral-700 dark:text-neutral-200" />
           </button>
           <button
-            className="relative z-40 md:size-10 size-6 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
+            className="size-9 md:size-10 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
             onClick={scrollRight}
             disabled={!canScrollRight}
+            title="Scroll right"
           >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowRight className="size-5 text-neutral-700 dark:text-neutral-200" />
           </button>
         </div>
+
+        {/* Horizontal Carousel Track */}
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-hidden py-14 scroll-smooth [scrollbar-width:none]"
+          className="flex w-full overflow-x-auto overscroll-x-contain py-4 pb-8 scroll-smooth no-scrollbar"
           ref={carouselRef}
           onScroll={checkScrollability}
         >
-          <div
-            className={cn(
-              "absolute right-0  z-[1000] h-auto  w-[5%] overflow-hidden bg-gradient-to-l"
-            )}
-          ></div>
-
-          <div
-            className={cn(
-              "flex flex-row justify-start gap-4 pl-4",
-              "mx-auto" // remove max-w-4xl if you want the carousel to span the full width of its container
-            )}
-          >
+          <div className="flex flex-row justify-start gap-5 md:gap-6 px-2">
             {items.map((item, index) => (
               <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{
                   opacity: 1,
                   y: 0,
                   transition: {
-                    duration: 0.5,
-                    delay: 0.2 * index,
+                    duration: 0.4,
+                    delay: 0.05 * index,
                     ease: "easeOut",
-                    once: true,
                   },
                 }}
                 key={"card" + index}
-                className="last:pr-[5%] md:last:pr-[5%]  rounded-3xl"
+                className="shrink-0"
               >
                 {item}
               </motion.div>
@@ -168,14 +161,16 @@ export const Card = ({
   githubLink,
   liveLink,
   description,
+  isGrid = false,
 }: {
-  card: Card
+  card: CardType
   index: number
   layout?: boolean
   techStack?: string[]
   githubLink?: string
   liveLink?: string
   description?: string
+  isGrid?: boolean
 }) => {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -211,54 +206,80 @@ export const Card = ({
 
   return (
     <>
+      {/* Detailed Modal Dialog */}
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 h-screen z-50 overflow-auto">
+          <div className="fixed inset-0 h-screen z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6 md:p-10">
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="bg-black/80 backdrop-blur-lg h-full w-full fixed inset-0"
+              className="bg-black/80 backdrop-blur-md fixed inset-0 z-40"
+              onClick={handleClose}
             />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              ref={containerRef}
-              layoutId={layout ? `card-${card.title}` : undefined}
-              className="max-w-5xl mx-auto bg-white dark:bg-neutral-900 h-fit  z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative"
-            >
-              <button
-                className="sticky top-4 h-8 w-8 right-0 ml-auto bg-black dark:bg-white rounded-full flex items-center justify-center"
-                onClick={handleClose}
-              >
-                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
-              </button>
-              <motion.p
-                layoutId={layout ? `category-${card.title}` : undefined}
-                className="text-base font-medium text-black dark:text-white"
-              >
-                {card.category}
-              </motion.p>
-              <motion.p
-                layoutId={layout ? `title-${card.title}` : undefined}
-                className="text-2xl md:text-5xl font-semibold text-neutral-700 mt-4 dark:text-white"
-              >
-                {card.title}
-              </motion.p>
 
+            {/* Modal Dialog Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.2 }}
+              ref={containerRef}
+              className="relative w-full max-w-4xl bg-white dark:bg-neutral-900 z-50 p-6 md:p-8 rounded-3xl font-sans border border-neutral-200 dark:border-neutral-800 shadow-2xl overflow-hidden my-auto max-h-[90vh] overflow-y-auto"
+            >
+              {/* Close Button */}
+              <button
+                className="absolute top-4 right-4 z-50 size-9 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center transition-colors cursor-pointer"
+                onClick={handleClose}
+                title="Close"
+              >
+                <IconX className="size-5 text-neutral-700 dark:text-neutral-200" />
+              </button>
+
+              {/* Category Pill */}
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  {card.category}
+                </span>
+                {liveLink && (
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-500 text-white flex items-center gap-1.5 shadow-xs">
+                    <span className="size-1.5 rounded-full bg-white animate-pulse" />
+                    Live
+                  </span>
+                )}
+              </div>
+
+              {/* Title */}
+              <h2 className="text-2xl md:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+                {card.title}
+              </h2>
+
+              {/* High-Resolution Mockup Showcase Frame */}
+              <div className="relative w-full aspect-[16/10] max-h-[460px] rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-200/80 dark:border-neutral-800 shadow-xl my-5 p-2 sm:p-4 flex items-center justify-center">
+                <Image
+                  src={card.src}
+                  alt={card.title}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+
+              {/* Description */}
               {description && (
-                <p className="text-neutral-600 dark:text-neutral-400 mt-4 text-base leading-relaxed">
+                <p className="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed">
                   {description}
                 </p>
               )}
 
+              {/* Tech Stack Pills */}
               {techStack && techStack.length > 0 && (
                 <div className="mt-6 flex flex-wrap gap-2">
                   {techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 rounded-full text-sm font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700"
+                      className="px-3 py-1 rounded-lg text-xs font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700"
                     >
                       {tech}
                     </span>
@@ -266,92 +287,157 @@ export const Card = ({
                 </div>
               )}
 
+              {/* Action Buttons: Live Demo & GitHub */}
               {(githubLink || liveLink) && (
-                <div className="mt-6 flex gap-3 flex-wrap">
-                  {githubLink && (
-                    <a
-                      href={githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-80 transition-opacity"
-                    >
-                      <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-                      </svg>
-                      View on GitHub
-                    </a>
-                  )}
+                <div className="mt-7 flex gap-3 flex-wrap pt-4 border-t border-neutral-200/60 dark:border-neutral-800/60">
                   {liveLink && (
                     <a
                       href={liveLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold shadow-md shadow-emerald-500/25 transition-all cursor-pointer"
                     >
-                      <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      Live Demo
+                      <span>Launch Live Demo</span>
+                      <IconExternalLink className="size-4" />
+                    </a>
+                  )}
+                  {githubLink && (
+                    <a
+                      href={githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 text-sm font-semibold transition-all cursor-pointer"
+                    >
+                      <IconBrandGithub className="size-4" />
+                      <span>View on GitHub</span>
                     </a>
                   )}
                 </div>
               )}
 
-              {card.content && <div className="py-10">{card.content}</div>}
+              {card.content && <div className="py-6">{card.content}</div>}
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-      <motion.button
-        layoutId={layout ? `card-${card.title}` : undefined}
+
+      {/* Redesigned Project Card with Dedicated 16:10 Media Showcase */}
+      <motion.div
         onClick={handleOpen}
-        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-80 md:h-[33rem] md:w-[26rem] overflow-hidden flex flex-col items-start justify-start relative z-10"
+        className={cn(
+          "rounded-2xl overflow-hidden bg-white dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800/80 hover:border-emerald-500/50 hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-emerald-500/5 transition-all duration-300 flex flex-col group text-left cursor-pointer",
+          isGrid
+            ? "w-full"
+            : "w-[320px] sm:w-[380px] md:w-[420px] h-[440px]"
+        )}
         whileHover={{
-          transform: "translateY(-10px)",
+          y: -4,
         }}
         transition={{
-          duration: 0.3,
+          duration: 0.2,
         }}
       >
-        <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
-        <div className="relative z-40 p-3 md:p-8">
-          <motion.p
-            layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-white text-base md:text-xl font-semibold  text-left"
-          >
+        {/* Top Media Showcase Container (Aspect 16:10 for perfect uncropped mockups) */}
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-neutral-950 border-b border-neutral-100 dark:border-neutral-800/60 p-2 sm:p-2.5 flex items-center justify-center">
+          {/* Subtle glow behind mockup on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10 pointer-events-none" />
+
+          {/* Clean Image with Object-Contain (No Cropping!) */}
+          <Image
+            src={card.src}
+            alt={card.title}
+            fill
+            className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+            unoptimized
+          />
+
+          {/* Floating Category Pill on Top-Left */}
+          <span className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-black/70 text-white backdrop-blur-md border border-white/10 shadow-sm">
             {card.category}
-          </motion.p>
-          <motion.p
-            layoutId={layout ? `title-${card.title}` : undefined}
-            className="text-white text-xl md:text-3xl max-w-xs text-left [text-wrap:balance] mt-2 font-black italic"
-          >
-            {card.title}
-          </motion.p>
+          </span>
+
+          {/* Live indicator on Top-Right if liveLink exists */}
+          {liveLink && (
+            <span className="absolute top-3 right-3 z-20 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/90 text-white backdrop-blur-md flex items-center gap-1 shadow-sm">
+              <span className="size-1.5 rounded-full bg-white animate-pulse" />
+              Live
+            </span>
+          )}
         </div>
-        {techStack?.length && (
-          <AnimatePresence>
-            <div className="absolute z-40 bottom-0 left-0 p-3 md:p-8 flex flex-wrap gap-1">
-              {techStack.map((tech) => (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+
+        {/* Bottom Details Section */}
+        <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between gap-2.5">
+          <div>
+            {/* Title with Arrow Icon on Hover */}
+            <div className="flex items-center justify-between gap-1">
+              <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors truncate">
+                {card.title}
+              </h3>
+              <IconArrowUpRight className="size-4 text-neutral-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+            </div>
+
+            {/* Description (Clean 2-line clamp) */}
+            {description && (
+              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-relaxed mt-1">
+                {description}
+              </p>
+            )}
+          </div>
+
+          {/* Tech Stack Badges */}
+          {techStack && techStack.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {techStack.slice(0, 4).map((tech) => (
+                <span
                   key={tech}
-                  className="text-white md:text-sm font-semibold  text-left px-3 py-1 rounded-2xl bg-black/50 backdrop-blur-sm border text-[10px] shadow"
+                  className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200/60 dark:border-neutral-700/60"
                 >
                   {tech}
-                </motion.div>
+                </span>
               ))}
+              {techStack.length > 4 && (
+                <span className="px-1.5 py-0.5 rounded-md text-[10px] text-neutral-400 font-medium">
+                  +{techStack.length - 4}
+                </span>
+              )}
             </div>
-          </AnimatePresence>
-        )}
-        <div className="absolute duration-500 z-[11] dark:bg-slate-800 bg-slate-400 dark:opacity-35 opacity-20 dark:hover:opacity-20 hover:opacity-35 inset-0 backdrop-blur-sm"></div>
-        <BlurImage
-          src={card.src}
-          alt={card.title}
-          fill
-          className="object-cover absolute z-10 inset-0  transition duration-300"
-        />
-      </motion.button>
+          )}
+
+          {/* Card Footer: Quick Actions */}
+          <div className="flex items-center justify-between pt-2.5 border-t border-neutral-100 dark:border-neutral-800/80 text-xs">
+            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 group-hover:underline">
+              View Project Details
+            </span>
+
+            <div className="flex items-center gap-1.5 text-neutral-400">
+              {githubLink && (
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="p-1 rounded-md hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                  title="View GitHub Repository"
+                >
+                  <IconBrandGithub className="size-3.5" />
+                </a>
+              )}
+              {liveLink && (
+                <a
+                  href={liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="p-1 rounded-md hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
+                  title="Open Live Preview"
+                >
+                  <IconExternalLink className="size-3.5" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </>
   )
 }
