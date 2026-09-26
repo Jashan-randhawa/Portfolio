@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "motion/react"
 import {
@@ -298,6 +298,168 @@ export function MusicPlayer() {
     setActiveTab("player")
   }
 
+  // Auto-move Genre Chips every 5 seconds (circular loop)
+  const genreChipsRef = useRef<HTMLDivElement>(null)
+  const [isGenreHovered, setIsGenreHovered] = useState(false)
+  const genreSlideIndexRef = useRef(0)
+
+  useEffect(() => {
+    if (activeTab !== "playlists" || isGenreHovered) return
+
+    const interval = setInterval(() => {
+      if (document.hidden) return
+      const container = genreChipsRef.current
+      if (!container) return
+      const maxScroll = container.scrollWidth - container.clientWidth
+      if (maxScroll <= 0) return
+
+      const buttons = container.querySelectorAll("button")
+      if (buttons.length === 0) return
+
+      genreSlideIndexRef.current = (genreSlideIndexRef.current + 1) % buttons.length
+
+      if (genreSlideIndexRef.current === 0) {
+        container.scrollTo({ left: 0, behavior: "smooth" })
+      } else {
+        const nextBtn = buttons[genreSlideIndexRef.current]
+        if (nextBtn) {
+          const targetScroll = Math.min(
+            maxScroll,
+            Math.max(0, nextBtn.offsetLeft - container.offsetLeft - 8)
+          )
+          container.scrollTo({ left: targetScroll, behavior: "smooth" })
+        }
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [activeTab, isGenreHovered])
+
+  const handleGenreScroll = useCallback(() => {
+    const container = genreChipsRef.current
+    if (!container) return
+    const buttons = container.querySelectorAll<HTMLElement>("button")
+    const containerLeft = container.getBoundingClientRect().left
+    let closestIdx = 0
+    let minDiff = Infinity
+    buttons.forEach((btn, idx) => {
+      const diff = Math.abs(btn.getBoundingClientRect().left - containerLeft)
+      if (diff < minDiff) {
+        minDiff = diff
+        closestIdx = idx
+      }
+    })
+    genreSlideIndexRef.current = closestIdx
+  }, [])
+
+  // Auto-move Search Artist Filter Pills every 5 seconds (circular loop)
+  const artistPillsRef = useRef<HTMLDivElement>(null)
+  const [isArtistHovered, setIsArtistHovered] = useState(false)
+  const artistSlideIndexRef = useRef(0)
+
+  useEffect(() => {
+    if (activeTab !== "search" || isArtistHovered) return
+
+    const interval = setInterval(() => {
+      if (document.hidden) return
+      const container = artistPillsRef.current
+      if (!container) return
+      const maxScroll = container.scrollWidth - container.clientWidth
+      if (maxScroll <= 0) return
+
+      const buttons = container.querySelectorAll("button")
+      if (buttons.length === 0) return
+
+      artistSlideIndexRef.current = (artistSlideIndexRef.current + 1) % buttons.length
+
+      if (artistSlideIndexRef.current === 0) {
+        container.scrollTo({ left: 0, behavior: "smooth" })
+      } else {
+        const nextBtn = buttons[artistSlideIndexRef.current]
+        if (nextBtn) {
+          const targetScroll = Math.min(
+            maxScroll,
+            Math.max(0, nextBtn.offsetLeft - container.offsetLeft - 8)
+          )
+          container.scrollTo({ left: targetScroll, behavior: "smooth" })
+        }
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [activeTab, isArtistHovered])
+
+  const handleArtistScroll = useCallback(() => {
+    const container = artistPillsRef.current
+    if (!container) return
+    const buttons = container.querySelectorAll<HTMLElement>("button")
+    const containerLeft = container.getBoundingClientRect().left
+    let closestIdx = 0
+    let minDiff = Infinity
+    buttons.forEach((btn, idx) => {
+      const diff = Math.abs(btn.getBoundingClientRect().left - containerLeft)
+      if (diff < minDiff) {
+        minDiff = diff
+        closestIdx = idx
+      }
+    })
+    artistSlideIndexRef.current = closestIdx
+  }, [])
+
+  // Auto-move Quick Select Track Strip in Now Playing every 5 seconds (circular loop)
+  const quickSelectRef = useRef<HTMLDivElement>(null)
+  const [isQuickSelectHovered, setIsQuickSelectHovered] = useState(false)
+  const quickSelectIndexRef = useRef(0)
+
+  useEffect(() => {
+    if (activeTab !== "player" || isQuickSelectHovered) return
+
+    const interval = setInterval(() => {
+      if (document.hidden) return
+      const container = quickSelectRef.current
+      if (!container) return
+      const maxScroll = container.scrollWidth - container.clientWidth
+      if (maxScroll <= 0) return
+
+      const buttons = container.querySelectorAll("button")
+      if (buttons.length === 0) return
+
+      quickSelectIndexRef.current = (quickSelectIndexRef.current + 1) % buttons.length
+
+      if (quickSelectIndexRef.current === 0) {
+        container.scrollTo({ left: 0, behavior: "smooth" })
+      } else {
+        const nextBtn = buttons[quickSelectIndexRef.current]
+        if (nextBtn) {
+          const targetScroll = Math.min(
+            maxScroll,
+            Math.max(0, nextBtn.offsetLeft - container.offsetLeft - 8)
+          )
+          container.scrollTo({ left: targetScroll, behavior: "smooth" })
+        }
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [activeTab, isQuickSelectHovered])
+
+  const handleQuickSelectScroll = useCallback(() => {
+    const container = quickSelectRef.current
+    if (!container) return
+    const buttons = container.querySelectorAll<HTMLElement>("button")
+    const containerLeft = container.getBoundingClientRect().left
+    let closestIdx = 0
+    let minDiff = Infinity
+    buttons.forEach((btn, idx) => {
+      const diff = Math.abs(btn.getBoundingClientRect().left - containerLeft)
+      if (diff < minDiff) {
+        minDiff = diff
+        closestIdx = idx
+      }
+    })
+    quickSelectIndexRef.current = closestIdx
+  }, [])
+
   if (!mounted) {
     return (
       <div className="w-full h-[480px] rounded-2xl bg-[#121212] animate-pulse border border-[#282828]" />
@@ -575,6 +737,12 @@ export function MusicPlayer() {
                   </span>
                 </div>
                 <div
+                  ref={quickSelectRef}
+                  onMouseEnter={() => setIsQuickSelectHovered(true)}
+                  onMouseLeave={() => setIsQuickSelectHovered(false)}
+                  onTouchStart={() => setIsQuickSelectHovered(true)}
+                  onTouchEnd={() => setTimeout(() => setIsQuickSelectHovered(false), 2000)}
+                  onScroll={handleQuickSelectScroll}
                   className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
                   style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
@@ -778,9 +946,15 @@ export function MusicPlayer() {
               transition={{ duration: 0.18 }}
               className="flex flex-col flex-1 h-[270px] justify-between"
             >
-              {/* Spotify Playlist Chips */}
+              {/* Spotify Playlist Chips (Auto-sliding circularly every 5 seconds) */}
               <div
-                className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+                ref={genreChipsRef}
+                onMouseEnter={() => setIsGenreHovered(true)}
+                onMouseLeave={() => setIsGenreHovered(false)}
+                onTouchStart={() => setIsGenreHovered(true)}
+                onTouchEnd={() => setTimeout(() => setIsGenreHovered(false), 2000)}
+                onScroll={handleGenreScroll}
+                className="flex items-center gap-1.5 pb-2 overflow-x-auto scroll-smooth no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {PUNJABI_GENRES.map((genre) => {
@@ -978,9 +1152,15 @@ export function MusicPlayer() {
                 </button>
               </form>
 
-              {/* Quick Artist Filter Pills */}
+              {/* Quick Artist Filter Pills (Auto-sliding circularly every 5 seconds) */}
               <div
-                className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+                ref={artistPillsRef}
+                onMouseEnter={() => setIsArtistHovered(true)}
+                onMouseLeave={() => setIsArtistHovered(false)}
+                onTouchStart={() => setIsArtistHovered(true)}
+                onTouchEnd={() => setTimeout(() => setIsArtistHovered(false), 2000)}
+                onScroll={handleArtistScroll}
+                className="flex items-center gap-1.5 pb-2 overflow-x-auto scroll-smooth no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {SEARCH_PRESETS.map((preset) => (
