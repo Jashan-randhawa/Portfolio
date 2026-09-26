@@ -310,24 +310,34 @@ export function MusicPlayer() {
       if (document.hidden) return
       const container = genreChipsRef.current
       if (!container) return
-      const maxScroll = container.scrollWidth - container.clientWidth
-      if (maxScroll <= 0) return
 
       const buttons = container.querySelectorAll("button")
-      if (buttons.length === 0) return
+      const singleSetLength = PUNJABI_GENRES.length
+      if (buttons.length < singleSetLength * 2) return
 
-      genreSlideIndexRef.current = (genreSlideIndexRef.current + 1) % buttons.length
+      const currentIdx = genreSlideIndexRef.current
+      const nextIdx = currentIdx + 1
 
-      if (genreSlideIndexRef.current === 0) {
-        container.scrollTo({ left: 0, behavior: "smooth" })
-      } else {
-        const nextBtn = buttons[genreSlideIndexRef.current]
-        if (nextBtn) {
-          const targetScroll = Math.min(
-            maxScroll,
-            Math.max(0, nextBtn.offsetLeft - container.offsetLeft - 8)
-          )
-          container.scrollTo({ left: targetScroll, behavior: "smooth" })
+      const targetBtn = buttons[nextIdx]
+      if (targetBtn) {
+        const targetScroll = Math.max(0, targetBtn.offsetLeft - container.offsetLeft)
+        container.scrollTo({ left: targetScroll, behavior: "smooth" })
+
+        if (nextIdx >= singleSetLength) {
+          genreSlideIndexRef.current = 0
+          setTimeout(() => {
+            if (genreChipsRef.current) {
+              const firstBtn = buttons[0]
+              if (firstBtn) {
+                genreChipsRef.current.scrollTo({
+                  left: firstBtn.offsetLeft - genreChipsRef.current.offsetLeft,
+                  behavior: "instant" as ScrollBehavior,
+                })
+              }
+            }
+          }, 450)
+        } else {
+          genreSlideIndexRef.current = nextIdx
         }
       }
     }, 5000)
@@ -338,7 +348,14 @@ export function MusicPlayer() {
   const handleGenreScroll = useCallback(() => {
     const container = genreChipsRef.current
     if (!container) return
+
+    const halfWidth = container.scrollWidth / 2
+    if (halfWidth > 0 && container.scrollLeft >= halfWidth) {
+      container.scrollLeft -= halfWidth
+    }
+
     const buttons = container.querySelectorAll<HTMLElement>("button")
+    if (buttons.length === 0) return
     const containerLeft = container.getBoundingClientRect().left
     let closestIdx = 0
     let minDiff = Infinity
@@ -349,7 +366,7 @@ export function MusicPlayer() {
         closestIdx = idx
       }
     })
-    genreSlideIndexRef.current = closestIdx
+    genreSlideIndexRef.current = closestIdx % PUNJABI_GENRES.length
   }, [])
 
   // Auto-move Search Artist Filter Pills every 5 seconds (circular loop)
@@ -364,24 +381,34 @@ export function MusicPlayer() {
       if (document.hidden) return
       const container = artistPillsRef.current
       if (!container) return
-      const maxScroll = container.scrollWidth - container.clientWidth
-      if (maxScroll <= 0) return
 
       const buttons = container.querySelectorAll("button")
-      if (buttons.length === 0) return
+      const singleSetLength = SEARCH_PRESETS.length
+      if (buttons.length < singleSetLength * 2) return
 
-      artistSlideIndexRef.current = (artistSlideIndexRef.current + 1) % buttons.length
+      const currentIdx = artistSlideIndexRef.current
+      const nextIdx = currentIdx + 1
 
-      if (artistSlideIndexRef.current === 0) {
-        container.scrollTo({ left: 0, behavior: "smooth" })
-      } else {
-        const nextBtn = buttons[artistSlideIndexRef.current]
-        if (nextBtn) {
-          const targetScroll = Math.min(
-            maxScroll,
-            Math.max(0, nextBtn.offsetLeft - container.offsetLeft - 8)
-          )
-          container.scrollTo({ left: targetScroll, behavior: "smooth" })
+      const targetBtn = buttons[nextIdx]
+      if (targetBtn) {
+        const targetScroll = Math.max(0, targetBtn.offsetLeft - container.offsetLeft)
+        container.scrollTo({ left: targetScroll, behavior: "smooth" })
+
+        if (nextIdx >= singleSetLength) {
+          artistSlideIndexRef.current = 0
+          setTimeout(() => {
+            if (artistPillsRef.current) {
+              const firstBtn = buttons[0]
+              if (firstBtn) {
+                artistPillsRef.current.scrollTo({
+                  left: firstBtn.offsetLeft - artistPillsRef.current.offsetLeft,
+                  behavior: "instant" as ScrollBehavior,
+                })
+              }
+            }
+          }, 450)
+        } else {
+          artistSlideIndexRef.current = nextIdx
         }
       }
     }, 5000)
@@ -392,7 +419,14 @@ export function MusicPlayer() {
   const handleArtistScroll = useCallback(() => {
     const container = artistPillsRef.current
     if (!container) return
+
+    const halfWidth = container.scrollWidth / 2
+    if (halfWidth > 0 && container.scrollLeft >= halfWidth) {
+      container.scrollLeft -= halfWidth
+    }
+
     const buttons = container.querySelectorAll<HTMLElement>("button")
+    if (buttons.length === 0) return
     const containerLeft = container.getBoundingClientRect().left
     let closestIdx = 0
     let minDiff = Infinity
@@ -403,7 +437,7 @@ export function MusicPlayer() {
         closestIdx = idx
       }
     })
-    artistSlideIndexRef.current = closestIdx
+    artistSlideIndexRef.current = closestIdx % SEARCH_PRESETS.length
   }, [])
 
   // Auto-move Quick Select Track Strip in Now Playing every 5 seconds (circular loop)
@@ -418,35 +452,52 @@ export function MusicPlayer() {
       if (document.hidden) return
       const container = quickSelectRef.current
       if (!container) return
-      const maxScroll = container.scrollWidth - container.clientWidth
-      if (maxScroll <= 0) return
 
       const buttons = container.querySelectorAll("button")
-      if (buttons.length === 0) return
+      const singleSetLength = tracks.length
+      if (singleSetLength === 0 || buttons.length < singleSetLength * 2) return
 
-      quickSelectIndexRef.current = (quickSelectIndexRef.current + 1) % buttons.length
+      const currentIdx = quickSelectIndexRef.current
+      const nextIdx = currentIdx + 1
 
-      if (quickSelectIndexRef.current === 0) {
-        container.scrollTo({ left: 0, behavior: "smooth" })
-      } else {
-        const nextBtn = buttons[quickSelectIndexRef.current]
-        if (nextBtn) {
-          const targetScroll = Math.min(
-            maxScroll,
-            Math.max(0, nextBtn.offsetLeft - container.offsetLeft - 8)
-          )
-          container.scrollTo({ left: targetScroll, behavior: "smooth" })
+      const targetBtn = buttons[nextIdx]
+      if (targetBtn) {
+        const targetScroll = Math.max(0, targetBtn.offsetLeft - container.offsetLeft)
+        container.scrollTo({ left: targetScroll, behavior: "smooth" })
+
+        if (nextIdx >= singleSetLength) {
+          quickSelectIndexRef.current = 0
+          setTimeout(() => {
+            if (quickSelectRef.current) {
+              const firstBtn = buttons[0]
+              if (firstBtn) {
+                quickSelectRef.current.scrollTo({
+                  left: firstBtn.offsetLeft - quickSelectRef.current.offsetLeft,
+                  behavior: "instant" as ScrollBehavior,
+                })
+              }
+            }
+          }, 450)
+        } else {
+          quickSelectIndexRef.current = nextIdx
         }
       }
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [activeTab, isQuickSelectHovered])
+  }, [activeTab, isQuickSelectHovered, tracks.length])
 
   const handleQuickSelectScroll = useCallback(() => {
     const container = quickSelectRef.current
     if (!container) return
+
+    const halfWidth = container.scrollWidth / 2
+    if (halfWidth > 0 && container.scrollLeft >= halfWidth) {
+      container.scrollLeft -= halfWidth
+    }
+
     const buttons = container.querySelectorAll<HTMLElement>("button")
+    if (buttons.length === 0) return
     const containerLeft = container.getBoundingClientRect().left
     let closestIdx = 0
     let minDiff = Infinity
@@ -457,8 +508,8 @@ export function MusicPlayer() {
         closestIdx = idx
       }
     })
-    quickSelectIndexRef.current = closestIdx
-  }, [])
+    quickSelectIndexRef.current = closestIdx % (tracks.length || 1)
+  }, [tracks.length])
 
   if (!mounted) {
     return (
@@ -746,14 +797,15 @@ export function MusicPlayer() {
                   className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
                   style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
-                  {tracks.map((song, i) => {
-                    const isThisActive = currentTrackIndex === i
+                  {[...tracks, ...tracks].map((song, i) => {
+                    const realIndex = i % (tracks.length || 1)
+                    const isThisActive = currentTrackIndex === realIndex
                     return (
                       <button
                         key={`${song.id}-${i}`}
                         type="button"
                         onClick={() => {
-                          setCurrentTrackIndex(i)
+                          setCurrentTrackIndex(realIndex)
                           setIsPlaying(true)
                         }}
                         className={`flex items-center gap-2 px-2 py-1 rounded-lg shrink-0 transition-all cursor-pointer border ${
@@ -957,11 +1009,11 @@ export function MusicPlayer() {
                 className="flex items-center gap-1.5 pb-2 overflow-x-auto scroll-smooth no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-                {PUNJABI_GENRES.map((genre) => {
+                {[...PUNJABI_GENRES, ...PUNJABI_GENRES].map((genre, idx) => {
                   const isSelected = genre.id === selectedGenreId
                   return (
                     <button
-                      key={genre.id}
+                      key={`${genre.id}-${idx}`}
                       type="button"
                       onClick={() => setSelectedGenreId(genre.id)}
                       className={`px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap cursor-pointer transition-all ${
@@ -979,9 +1031,15 @@ export function MusicPlayer() {
               {/* Playlist Header Card with Play All CTA */}
               <div className="flex items-center justify-between p-2.5 mb-1.5 rounded-xl bg-[#181818] border border-[#282828] shrink-0">
                 <div className="min-w-0 pr-2">
-                  <span className="text-[9px] uppercase font-bold text-[#B3B3B3] tracking-wider">
-                    Playlist
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[9px] uppercase font-bold text-[#B3B3B3] tracking-wider">
+                      Playlist
+                    </span>
+                    <span className="flex items-center gap-1 text-[9px] text-[#1ED760] font-semibold">
+                      <span className="size-1.5 rounded-full bg-[#1ED760] animate-pulse" />
+                      <span>Circular (5s)</span>
+                    </span>
+                  </div>
                   <h5 className="text-xs sm:text-sm font-extrabold text-white truncate">
                     {currentGenre.name}
                   </h5>
@@ -1152,6 +1210,15 @@ export function MusicPlayer() {
                 </button>
               </form>
 
+              {/* Quick Artist Filter Header */}
+              <div className="flex items-center justify-between px-1 mb-1 text-[10px] text-[#B3B3B3] font-semibold">
+                <span>Top Punjabi Artists</span>
+                <span className="flex items-center gap-1 text-[9px] text-[#1ED760]">
+                  <span className="size-1.5 rounded-full bg-[#1ED760] animate-pulse" />
+                  <span>Circular (5s)</span>
+                </span>
+              </div>
+
               {/* Quick Artist Filter Pills (Auto-sliding circularly every 5 seconds) */}
               <div
                 ref={artistPillsRef}
@@ -1163,9 +1230,9 @@ export function MusicPlayer() {
                 className="flex items-center gap-1.5 pb-2 overflow-x-auto scroll-smooth no-scrollbar shrink-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-                {SEARCH_PRESETS.map((preset) => (
+                {[...SEARCH_PRESETS, ...SEARCH_PRESETS].map((preset, idx) => (
                   <button
-                    key={preset}
+                    key={`${preset}-${idx}`}
                     type="button"
                     onClick={() => {
                       setSearchQuery(preset)
