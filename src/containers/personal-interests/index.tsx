@@ -4,7 +4,7 @@ import { Pointer } from "@/components/magicui/pointer"
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid"
 import { EvervaultCard } from "@/components/ui/evervault-card"
 import { cn } from "@/lib/utils"
-import { IconClipboardCopy } from "@tabler/icons-react"
+import { IconClipboardCopy, IconBrandSpotify } from "@tabler/icons-react"
 import { Blocks, Music2, Rss } from "lucide-react"
 import { motion } from "motion/react"
 import { useEffect, useState } from "react"
@@ -210,15 +210,15 @@ const items = [
     icon: <Blocks className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Music & Mood",
+    title: "Spotify Player",
     description: (
       <span className="text-sm">
-        Custom JioSaavn audio player featuring 100 Punjabi songs across 5 genres (Bhangra, Motivational, Hip-Hop, Sufi & Folk) with live search.
+        Spotify-designed custom audio player featuring 100 Punjabi songs across 5 genres (Bhangra, Motivational, Hip-Hop, Sufi & Folk) with live search.
       </span>
     ),
     header: <SkeletonThree />,
     className: "md:col-span-1 row-span-2 min-h-[520px]",
-    icon: <Music2 className="h-4 w-4 text-neutral-500" />,
+    icon: <IconBrandSpotify className="h-4 w-4 text-[#1ED760]" />,
   },
   {
     title: "Go-To Dev Blogs",

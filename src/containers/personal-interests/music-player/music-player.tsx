@@ -13,9 +13,9 @@ import {
   Volume1,
   Search,
   ListMusic,
-  Radio,
+  Heart,
+  Laptop2,
   ExternalLink,
-  Sparkles,
   Loader2,
   Shuffle,
   Repeat,
@@ -24,9 +24,10 @@ import {
   Plus,
   Trash2,
   X,
-  Disc3,
   Maximize2,
+  Check,
 } from "lucide-react"
+import { IconBrandSpotify } from "@tabler/icons-react"
 import {
   DEFAULT_TRACKS,
   PUNJABI_GENRES,
@@ -54,53 +55,6 @@ const SEARCH_PRESETS = [
   "Daler Mehndi",
 ]
 
-const GENRE_CONFIG: Record<
-  string,
-  {
-    badge: string
-    color: string
-    activeBg: string
-    border: string
-    gradient: string
-  }
-> = {
-  bhangra: {
-    badge: "🎉 Bhangra",
-    color: "text-amber-500 dark:text-amber-400",
-    activeBg: "bg-amber-500 text-white shadow-amber-500/25",
-    border: "border-amber-500/40",
-    gradient: "from-amber-500 to-orange-500",
-  },
-  motivational: {
-    badge: "⚡ Motivation",
-    color: "text-cyan-500 dark:text-cyan-400",
-    activeBg: "bg-cyan-500 text-white shadow-cyan-500/25",
-    border: "border-cyan-500/40",
-    gradient: "from-cyan-500 to-blue-500",
-  },
-  rap: {
-    badge: "🎤 Hip-Hop",
-    color: "text-emerald-500 dark:text-emerald-400",
-    activeBg: "bg-emerald-500 text-white shadow-emerald-500/25",
-    border: "border-emerald-500/40",
-    gradient: "from-emerald-500 to-teal-500",
-  },
-  sufi: {
-    badge: "🕊️ Sufi",
-    color: "text-violet-500 dark:text-violet-400",
-    activeBg: "bg-violet-500 text-white shadow-violet-500/25",
-    border: "border-violet-500/40",
-    gradient: "from-violet-500 to-purple-500",
-  },
-  folk: {
-    badge: "🪕 Folk",
-    color: "text-rose-500 dark:text-rose-400",
-    activeBg: "bg-rose-500 text-white shadow-rose-500/25",
-    border: "border-rose-500/40",
-    gradient: "from-rose-500 to-pink-500",
-  },
-}
-
 export function MusicPlayer() {
   const [mounted, setMounted] = useState(false)
   const [tracks, setTracks] = useState<JioSaavnSong[]>(DEFAULT_TRACKS)
@@ -114,12 +68,17 @@ export function MusicPlayer() {
   const [isShuffle, setIsShuffle] = useState(false)
   const [repeatMode, setRepeatMode] = useState<"off" | "all" | "one">("all")
 
-  // Navigation tabs: player (Now Playing), genres (5 Punjabi Genres), search, queue
+  // Liked songs set
+  const [likedSongIds, setLikedSongIds] = useState<Set<string>>(
+    () => new Set(["3hTPwXPr", "U3hhczTF", "FDK_XUST"])
+  )
+
+  // Navigation tabs: player (Now Playing), playlists (5 Punjabi Genres), search, queue
   const [activeTab, setActiveTab] = useState<
-    "player" | "genres" | "search" | "queue"
+    "player" | "playlists" | "search" | "queue"
   >("player")
 
-  // Active selected genre in the Genres tab
+  // Active selected playlist/genre
   const [selectedGenreId, setSelectedGenreId] = useState<string>(
     PUNJABI_GENRES[0]?.id || "bhangra"
   )
@@ -134,7 +93,6 @@ export function MusicPlayer() {
   const currentTrack = tracks[currentTrackIndex] || DEFAULT_TRACKS[0]
   const currentGenre =
     PUNJABI_GENRES.find((g) => g.id === selectedGenreId) || PUNJABI_GENRES[0]
-  const genreMeta = GENRE_CONFIG[selectedGenreId] || GENRE_CONFIG.bhangra
 
   useEffect(() => {
     setMounted(true)
@@ -263,6 +221,16 @@ export function MusicPlayer() {
     else setRepeatMode("off")
   }
 
+  const toggleLike = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    setLikedSongIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
   const executeSearch = async (queryText: string) => {
     if (!queryText.trim()) return
     setIsSearching(true)
@@ -312,7 +280,7 @@ export function MusicPlayer() {
 
   const removeSongFromQueue = (indexToRemove: number, e: React.MouseEvent) => {
     e.stopPropagation()
-    if (tracks.length <= 1) return // Keep at least one song
+    if (tracks.length <= 1) return
     const newTracks = tracks.filter((_, idx) => idx !== indexToRemove)
     setTracks(newTracks)
     if (indexToRemove === currentTrackIndex) {
@@ -332,14 +300,15 @@ export function MusicPlayer() {
 
   if (!mounted) {
     return (
-      <div className="w-full h-[480px] rounded-2xl bg-neutral-100 dark:bg-neutral-800/60 animate-pulse" />
+      <div className="w-full h-[480px] rounded-2xl bg-[#121212] animate-pulse border border-[#282828]" />
     )
   }
 
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0
+  const isCurrentLiked = likedSongIds.has(currentTrack.id)
 
   return (
-    <div className="flex flex-col w-full h-full select-none justify-between">
+    <div className="flex flex-col w-full h-full select-none justify-between bg-[#121212] text-white rounded-2xl p-3 sm:p-4 border border-[#282828] shadow-2xl overflow-hidden font-sans">
       <audio
         ref={audioRef}
         onTimeUpdate={handleTimeUpdate}
@@ -347,303 +316,275 @@ export function MusicPlayer() {
         onEnded={handleSongEnded}
       />
 
-      {/* Modern Top Header with Brand Badge & Tabs */}
-      <div className="flex items-center justify-between pb-2.5 px-0.5 border-b border-neutral-200/60 dark:border-neutral-800/60 shrink-0">
+      {/* Spotify Top Header */}
+      <div className="flex items-center justify-between pb-3 px-1 border-b border-[#282828] shrink-0">
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200">
-            <Radio className="size-3.5 text-emerald-500 animate-pulse" />
-            <span className="tracking-tight bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 bg-clip-text text-transparent font-extrabold">
-              JioSaavn
-            </span>
-            <span className="text-[10px] text-neutral-400 font-normal">Hi-Fi</span>
-          </div>
+          <IconBrandSpotify className="size-5 text-[#1ED760]" />
+          <span className="text-xs font-black tracking-tight text-white">
+            Spotify
+          </span>
 
           {/* Equalizer animation when playing */}
           {isPlaying && (
             <div
-              className="flex items-end gap-0.5 h-3 ml-0.5"
-              title="Streaming 160kbps AAC direct audio"
+              className="flex items-end gap-0.5 h-3 ml-1"
+              title="Streaming 160kbps AAC audio"
             >
-              <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:0ms]" />
-              <span className="w-0.5 h-2/3 bg-emerald-500 rounded-full animate-bounce [animation-delay:150ms]" />
-              <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:300ms]" />
-              <span className="w-0.5 h-1/2 bg-emerald-500 rounded-full animate-bounce [animation-delay:75ms]" />
+              <span className="w-0.5 h-full bg-[#1ED760] rounded-full animate-bounce [animation-delay:0ms]" />
+              <span className="w-0.5 h-2/3 bg-[#1ED760] rounded-full animate-bounce [animation-delay:150ms]" />
+              <span className="w-0.5 h-full bg-[#1ED760] rounded-full animate-bounce [animation-delay:300ms]" />
+              <span className="w-0.5 h-1/2 bg-[#1ED760] rounded-full animate-bounce [animation-delay:75ms]" />
             </div>
           )}
         </div>
 
-        {/* Tab Navigation Controls */}
-        <div className="flex items-center bg-neutral-100 dark:bg-neutral-800/80 p-0.5 rounded-lg text-xs">
+        {/* Spotify Tab Navigation Pills */}
+        <div className="flex items-center bg-[#242424] p-0.5 rounded-full text-xs">
           <button
             type="button"
             onClick={() => setActiveTab("player")}
-            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer ${
+            className={`px-3 py-1 rounded-full font-bold text-[11px] transition-all cursor-pointer ${
               activeTab === "player"
-                ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
-                : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
+                ? "bg-white text-black shadow-md font-extrabold"
+                : "text-[#B3B3B3] hover:text-white"
             }`}
           >
             Now
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab("genres")}
-            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
-              activeTab === "genres"
-                ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
-                : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
+            onClick={() => setActiveTab("playlists")}
+            className={`px-3 py-1 rounded-full font-bold text-[11px] transition-all cursor-pointer ${
+              activeTab === "playlists"
+                ? "bg-white text-black shadow-md font-extrabold"
+                : "text-[#B3B3B3] hover:text-white"
             }`}
           >
-            <Disc3 className="size-2.5" />
-            <span>Genres</span>
+            Playlists
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("search")}
-            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`px-3 py-1 rounded-full font-bold text-[11px] transition-all cursor-pointer ${
               activeTab === "search"
-                ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
-                : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
+                ? "bg-white text-black shadow-md font-extrabold"
+                : "text-[#B3B3B3] hover:text-white"
             }`}
           >
-            <Search className="size-2.5" />
-            <span>Search</span>
+            Search
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("queue")}
-            className={`px-2.5 py-0.5 rounded-md font-medium text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`px-3 py-1 rounded-full font-bold text-[11px] transition-all cursor-pointer ${
               activeTab === "queue"
-                ? "bg-white dark:bg-neutral-700 text-black dark:text-white shadow-xs font-semibold"
-                : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
+                ? "bg-white text-black shadow-md font-extrabold"
+                : "text-[#B3B3B3] hover:text-white"
             }`}
           >
-            <ListMusic className="size-2.5" />
-            <span>Queue</span>
+            Queue
           </button>
         </div>
       </div>
 
       {/* Main Tab Content View */}
-      <div className="relative flex-1 flex flex-col justify-between pt-2 overflow-hidden">
+      <div className="relative flex-1 flex flex-col justify-between pt-3 overflow-hidden">
         <AnimatePresence mode="wait">
-          {/* TAB 1: NOW PLAYING SCREEN */}
+          {/* TAB 1: SPOTIFY NOW PLAYING SCREEN */}
           {activeTab === "player" && (
             <motion.div
               key="player"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
               className="flex flex-col flex-1 justify-between"
             >
-              {/* Turntable Showcase Card */}
-              <div className="relative flex items-center gap-3.5 p-3 rounded-2xl bg-neutral-50/90 dark:bg-neutral-900/90 border border-neutral-200/70 dark:border-neutral-800/70 shadow-xs backdrop-blur-md overflow-hidden group">
-                {/* Ambient dynamic glow behind artwork */}
-                <div
-                  className={`absolute -left-6 -top-6 size-32 rounded-full blur-2xl pointer-events-none transition-opacity duration-700 ${
-                    isPlaying
-                      ? "opacity-35 bg-emerald-500/40"
-                      : "opacity-15 bg-neutral-500/20"
-                  }`}
-                />
-
-                {/* Rotating Vinyl Record Artwork with Tonearm */}
-                <div className="relative size-24 sm:size-28 shrink-0 flex items-center justify-center">
-                  {/* Vinyl Record */}
+              {/* Spotify Album Art Showcase Card */}
+              <div className="relative flex items-center gap-3.5 p-3 rounded-xl bg-[#181818] border border-[#282828] shadow-lg group">
+                {/* Album Cover Art */}
+                <div className="relative size-24 sm:size-28 shrink-0 rounded-lg overflow-hidden shadow-2xl bg-[#282828]">
+                  <Image
+                    src={currentTrack.image || "/images/project-icon.webp"}
+                    alt={currentTrack.title}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                  {/* Hover Overlay with Green Play Button */}
                   <div
-                    className="relative size-24 sm:size-28 rounded-full bg-neutral-950 p-1 shadow-xl ring-1 ring-black/10 dark:ring-white/10 overflow-hidden cursor-pointer"
-                    style={{
-                      animation: "spin 8s linear infinite",
-                      animationPlayState: isPlaying ? "running" : "paused",
-                    }}
                     onClick={togglePlay}
+                    className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
                   >
-                    {/* Vinyl concentric groove patterns */}
-                    <div className="absolute inset-1.5 rounded-full border border-neutral-800/80 pointer-events-none" />
-                    <div className="absolute inset-3 rounded-full border border-neutral-800/50 pointer-events-none" />
-                    <div className="absolute inset-5 rounded-full border border-neutral-800/30 pointer-events-none" />
-
-                    {/* Album Art Centerpiece */}
-                    <div className="relative w-full h-full rounded-full overflow-hidden">
-                      <Image
-                        src={currentTrack.image || "/images/project-icon.webp"}
-                        alt={currentTrack.title}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
+                    <div className="size-10 rounded-full bg-[#1ED760] text-black flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+                      {isPlaying ? (
+                        <Pause className="size-5 fill-black" />
+                      ) : (
+                        <Play className="size-5 fill-black translate-x-0.5" />
+                      )}
                     </div>
-
-                    {/* Central Vinyl Spindle Hole */}
-                    <div className="absolute inset-0 m-auto size-3 rounded-full bg-neutral-950 border border-neutral-600 shadow-inner z-10" />
                   </div>
-
-                  {/* Play / Pause overlay on hover */}
-                  <button
-                    type="button"
-                    onClick={togglePlay}
-                    className="absolute inset-0 m-auto size-8 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 backdrop-blur-xs shadow-md"
-                    title={isPlaying ? "Pause" : "Play"}
-                  >
-                    {isPlaying ? (
-                      <Pause className="size-4 fill-white" />
-                    ) : (
-                      <Play className="size-4 fill-white translate-x-0.5" />
-                    )}
-                  </button>
                 </div>
 
-                {/* Track Details & Soundwave */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center z-10">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                      160kbps AAC
+                {/* Track Details & Heart Like Action */}
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#1ED760]">
+                      Spotify Audio
                     </span>
-                    {currentTrack.year && (
-                      <span className="text-[10px] text-neutral-400 font-medium">
-                        {currentTrack.year}
-                      </span>
-                    )}
+                    {/* Heart / Like Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => toggleLike(currentTrack.id, e)}
+                      className="p-1 text-[#B3B3B3] hover:text-white transition-colors cursor-pointer"
+                      title={isCurrentLiked ? "Remove from Liked Songs" : "Save to Liked Songs"}
+                    >
+                      <Heart
+                        className={`size-4 transition-all ${
+                          isCurrentLiked
+                            ? "fill-[#1ED760] text-[#1ED760] scale-110"
+                            : "hover:scale-110"
+                        }`}
+                      />
+                    </button>
                   </div>
 
                   <h4
-                    className="text-base sm:text-lg font-bold truncate text-neutral-900 dark:text-neutral-100 mt-1"
+                    className="text-base sm:text-lg font-bold truncate text-white hover:underline cursor-pointer mt-0.5"
                     title={currentTrack.title}
                   >
                     {currentTrack.title}
                   </h4>
 
                   <p
-                    className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5"
+                    className="text-xs text-[#B3B3B3] hover:text-white hover:underline cursor-pointer truncate mt-0.5"
                     title={currentTrack.artist}
                   >
                     {currentTrack.artist}
                   </p>
 
-                  {/* 12-Bar Animated Soundwave Visualizer */}
-                  <div className="flex items-end gap-1 h-3.5 mt-2.5">
-                    {Array.from({ length: 12 }).map((_, idx) => (
-                      <span
-                        key={idx}
-                        className={`w-1 rounded-full transition-all duration-300 ${
-                          isPlaying
-                            ? "bg-gradient-to-t from-emerald-500 to-teal-400 animate-pulse"
-                            : "bg-neutral-300 dark:bg-neutral-700"
-                        }`}
-                        style={{
-                          height: isPlaying
-                            ? `${Math.sin(idx * 0.7 + 1) * 35 + 55}%`
-                            : "20%",
-                          animationDelay: `${(idx * 110) % 800}ms`,
-                        }}
-                      />
-                    ))}
-                  </div>
+                  {currentTrack.album && (
+                    <span
+                      className="text-[11px] text-[#727272] truncate mt-0.5"
+                      title={currentTrack.album}
+                    >
+                      {currentTrack.album} {currentTrack.year ? `• ${currentTrack.year}` : ""}
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* Interactive Progress Bar & Timestamps */}
-              <div className="space-y-1 my-2 px-1">
-                <div className="relative group flex items-center">
+              {/* Spotify Progress Bar Scrubber */}
+              <div className="space-y-1 my-2.5 px-1 group">
+                <div className="relative flex items-center">
                   <input
                     type="range"
                     min={0}
                     max={duration || 100}
                     value={currentTime}
                     onChange={handleSeek}
-                    className="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-emerald-500 transition-all focus:outline-none"
+                    className="w-full h-1 bg-[#4D4D4D] rounded-full appearance-none cursor-pointer accent-[#1ED760] group-hover:h-1.5 transition-all focus:outline-none"
                   />
                 </div>
-                <div className="flex justify-between text-[11px] font-medium text-neutral-500 dark:text-neutral-400 font-mono">
+                <div className="flex justify-between text-[11px] font-mono font-medium text-[#B3B3B3]">
                   <span>{formatTime(currentTime)}</span>
                   <span>{formatTime(duration)}</span>
                 </div>
               </div>
 
-              {/* Main Playback Controls Bar */}
-              <div className="flex items-center justify-between px-2 pt-0.5 pb-1">
-                {/* Shuffle Mode Toggle */}
-                <button
-                  type="button"
-                  onClick={() => setIsShuffle(!isShuffle)}
-                  className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                    isShuffle
-                      ? "text-emerald-500 bg-emerald-500/10 font-bold"
-                      : "text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
-                  }`}
-                  title={isShuffle ? "Shuffle On" : "Shuffle Off"}
-                >
-                  <Shuffle className="size-4" />
-                </button>
+              {/* Spotify Playback Controls Bar */}
+              <div className="flex items-center justify-between px-3 pt-0.5 pb-1">
+                {/* Shuffle Button with green dot */}
+                <div className="flex flex-col items-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsShuffle(!isShuffle)}
+                    className={`p-1.5 transition-colors cursor-pointer ${
+                      isShuffle
+                        ? "text-[#1ED760]"
+                        : "text-[#B3B3B3] hover:text-white"
+                    }`}
+                    title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
+                  >
+                    <Shuffle className="size-4" />
+                  </button>
+                  {isShuffle && (
+                    <span className="size-1 rounded-full bg-[#1ED760] -mt-0.5" />
+                  )}
+                </div>
 
-                {/* Previous Track */}
+                {/* Previous Button */}
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="p-2 rounded-full text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-all cursor-pointer"
-                  title="Previous track"
+                  className="p-2 text-[#B3B3B3] hover:text-white transition-colors cursor-pointer"
+                  title="Previous"
                 >
-                  <SkipBack className="size-4" />
+                  <SkipBack className="size-5 fill-current" />
                 </button>
 
-                {/* Primary Play / Pause Button */}
+                {/* Big Spotify Circular Green Play/Pause Button */}
                 <button
                   type="button"
                   onClick={togglePlay}
-                  className="p-3.5 rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                  className="p-3 rounded-full bg-[#1ED760] text-black shadow-lg shadow-[#1ED760]/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                   title={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying ? (
-                    <Pause className="size-5 fill-white" />
+                    <Pause className="size-5 fill-black" />
                   ) : (
-                    <Play className="size-5 fill-white translate-x-0.5" />
+                    <Play className="size-5 fill-black translate-x-0.5" />
                   )}
                 </button>
 
-                {/* Next Track */}
+                {/* Next Button */}
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="p-2 rounded-full text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-all cursor-pointer"
-                  title="Next track"
+                  className="p-2 text-[#B3B3B3] hover:text-white transition-colors cursor-pointer"
+                  title="Next"
                 >
-                  <SkipForward className="size-4" />
+                  <SkipForward className="size-5 fill-current" />
                 </button>
 
-                {/* Repeat Mode Toggle */}
-                <button
-                  type="button"
-                  onClick={toggleRepeatMode}
-                  className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                    repeatMode !== "off"
-                      ? "text-emerald-500 bg-emerald-500/10 font-bold"
-                      : "text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
-                  }`}
-                  title={
-                    repeatMode === "one"
-                      ? "Repeat One Song"
-                      : repeatMode === "all"
-                      ? "Repeat All Songs"
-                      : "Repeat Off"
-                  }
-                >
-                  {repeatMode === "one" ? (
-                    <Repeat1 className="size-4" />
-                  ) : (
-                    <Repeat className="size-4" />
+                {/* Repeat Button with green dot */}
+                <div className="flex flex-col items-center">
+                  <button
+                    type="button"
+                    onClick={toggleRepeatMode}
+                    className={`p-1.5 transition-colors cursor-pointer ${
+                      repeatMode !== "off"
+                        ? "text-[#1ED760]"
+                        : "text-[#B3B3B3] hover:text-white"
+                    }`}
+                    title={
+                      repeatMode === "one"
+                        ? "Repeat one"
+                        : repeatMode === "all"
+                        ? "Repeat all"
+                        : "Enable repeat"
+                    }
+                  >
+                    {repeatMode === "one" ? (
+                      <Repeat1 className="size-4" />
+                    ) : (
+                      <Repeat className="size-4" />
+                    )}
+                  </button>
+                  {repeatMode !== "off" && (
+                    <span className="size-1 rounded-full bg-[#1ED760] -mt-0.5" />
                   )}
-                </button>
+                </div>
               </div>
 
-              {/* Utility Footer Bar: Volume & External JioSaavn Link */}
-              <div className="flex items-center justify-between px-2 pt-2 border-t border-neutral-200/50 dark:border-neutral-800/50 text-xs">
-                {/* Volume slider */}
-                <div className="flex items-center gap-1.5">
+              {/* Spotify Utility Footer: Volume & Connected Device */}
+              <div className="flex items-center justify-between px-2 pt-2 border-t border-[#282828] text-xs">
+                {/* Volume Slider with Mute */}
+                <div className="flex items-center gap-2 group">
                   <button
                     type="button"
                     onClick={toggleMute}
-                    className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
+                    className="text-[#B3B3B3] hover:text-white transition-colors cursor-pointer"
                     title={isMuted ? "Unmute" : "Mute"}
                   >
                     {isMuted || volume === 0 ? (
@@ -664,25 +605,23 @@ export function MusicPlayer() {
                       setVolume(Number(e.target.value))
                       setIsMuted(false)
                     }}
-                    className="w-16 sm:w-20 h-1 bg-neutral-200 dark:bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    className="w-16 sm:w-20 h-1 bg-[#4D4D4D] rounded-full appearance-none cursor-pointer accent-[#1ED760] group-hover:h-1.5 transition-all"
                   />
                 </div>
 
-                {/* Track Queue indicator and External Link */}
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-neutral-400 font-mono">
-                    {currentTrackIndex + 1}/{tracks.length}
-                  </span>
+                {/* Spotify Device Connect Status */}
+                <div className="flex items-center gap-1.5 text-[11px] text-[#1ED760]">
+                  <Laptop2 className="size-3.5" />
+                  <span className="font-medium">Web Player</span>
                   <a
                     href={`https://www.jiosaavn.com/search/${encodeURIComponent(
                       currentTrack.title
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[10px] text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
-                    title="Open on JioSaavn web"
+                    className="text-[#727272] hover:text-[#1ED760] transition-colors ml-1"
+                    title="Open on JioSaavn"
                   >
-                    <span>JioSaavn</span>
                     <ExternalLink className="size-2.5" />
                   </a>
                 </div>
@@ -690,79 +629,99 @@ export function MusicPlayer() {
             </motion.div>
           )}
 
-          {/* TAB 2: PUNJABI GENRES (5 Genres x 20 Songs each) */}
-          {activeTab === "genres" && (
+          {/* TAB 2: SPOTIFY PLAYLISTS VIEW (5 Punjabi Genres x 20 Songs) */}
+          {activeTab === "playlists" && (
             <motion.div
-              key="genres"
+              key="playlists"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
               className="flex flex-col flex-1 h-[270px] justify-between"
             >
-              {/* Genre Selector Pills */}
-              <div className="flex items-center gap-1 pb-1.5 overflow-x-auto no-scrollbar shrink-0">
+              {/* Spotify Playlist Chips */}
+              <div className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0">
                 {PUNJABI_GENRES.map((genre) => {
                   const isSelected = genre.id === selectedGenreId
-                  const config = GENRE_CONFIG[genre.id] || GENRE_CONFIG.bhangra
                   return (
                     <button
                       key={genre.id}
                       type="button"
                       onClick={() => setSelectedGenreId(genre.id)}
-                      className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all whitespace-nowrap cursor-pointer flex items-center gap-1 ${
+                      className={`px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap cursor-pointer transition-all ${
                         isSelected
-                          ? `${config.activeBg} font-semibold shadow-xs`
-                          : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                          ? "bg-[#1ED760] text-black font-extrabold shadow-sm"
+                          : "bg-[#242424] text-[#B3B3B3] hover:text-white hover:bg-[#2A2A2A]"
                       }`}
                     >
-                      <span>{config.badge}</span>
-                      <span className="text-[10px] opacity-75">(20)</span>
+                      {genre.badge}
                     </button>
                   )
                 })}
               </div>
 
-              {/* Genre Banner & Play All CTA */}
-              <div
-                className={`flex items-center justify-between p-2 mb-1.5 rounded-xl border bg-neutral-50/80 dark:bg-neutral-900/80 ${genreMeta.border} shrink-0`}
-              >
+              {/* Playlist Header Card with Play All CTA */}
+              <div className="flex items-center justify-between p-2.5 mb-1.5 rounded-xl bg-[#181818] border border-[#282828] shrink-0">
                 <div className="min-w-0 pr-2">
-                  <h5 className="text-xs font-bold text-neutral-900 dark:text-neutral-100 truncate">
+                  <span className="text-[9px] uppercase font-bold text-[#B3B3B3] tracking-wider">
+                    Playlist
+                  </span>
+                  <h5 className="text-xs sm:text-sm font-extrabold text-white truncate">
                     {currentGenre.name}
                   </h5>
-                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
-                    {currentGenre.description}
+                  <p className="text-[10px] text-[#B3B3B3] truncate">
+                    20 songs • {currentGenre.description}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => loadGenrePlaylist(currentGenre, 0)}
-                  className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-gradient-to-r ${genreMeta.gradient} text-white flex items-center gap-1 hover:scale-105 transition-transform shrink-0 shadow-xs cursor-pointer`}
+                  className="size-9 rounded-full bg-[#1ED760] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-md shrink-0 cursor-pointer"
+                  title="Play all tracks"
                 >
-                  <Play className="size-3 fill-white" />
-                  <span>Play All (20)</span>
+                  <Play className="size-4 fill-black translate-x-0.5" />
                 </button>
               </div>
 
-              {/* List of 20 songs in this genre */}
-              <div className="flex-1 overflow-y-auto space-y-1 pr-1 no-scrollbar">
+              {/* Spotify Tracklist Table */}
+              <div className="flex-1 overflow-y-auto space-y-0.5 pr-1 no-scrollbar">
                 {currentGenre.tracks.map((song, i) => {
                   const isThisPlaying =
                     isPlaying && currentTrack.id === song.id
+                  const isSongLiked = likedSongIds.has(song.id)
+
                   return (
                     <div
                       key={`${song.id}-${i}`}
-                      className={`flex items-center gap-2 p-1.5 rounded-xl transition-colors group ${
+                      className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md transition-colors group cursor-pointer ${
                         isThisPlaying
-                          ? "bg-emerald-500/10 border border-emerald-500/30"
-                          : "hover:bg-neutral-100 dark:hover:bg-neutral-800/80"
+                          ? "bg-[#282828] text-[#1ED760]"
+                          : "hover:bg-[#242424] text-white"
                       }`}
                     >
-                      <span className="text-[10px] font-mono text-neutral-400 w-4 text-center shrink-0">
-                        {i + 1}
-                      </span>
-                      <div className="relative size-8 rounded-lg overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-800">
+                      {/* Track number or Play icon / Animated equalizer */}
+                      <div className="size-4 flex items-center justify-center shrink-0">
+                        {isThisPlaying ? (
+                          <div className="flex items-end gap-0.5 h-3">
+                            <span className="w-0.5 h-full bg-[#1ED760] rounded-full animate-bounce [animation-delay:0ms]" />
+                            <span className="w-0.5 h-2/3 bg-[#1ED760] rounded-full animate-bounce [animation-delay:150ms]" />
+                            <span className="w-0.5 h-full bg-[#1ED760] rounded-full animate-bounce [animation-delay:300ms]" />
+                          </div>
+                        ) : (
+                          <>
+                            <span className="text-[11px] font-mono text-[#B3B3B3] group-hover:hidden">
+                              {i + 1}
+                            </span>
+                            <Play
+                              onClick={() => loadGenrePlaylist(currentGenre, i)}
+                              className="size-3 fill-current text-white hidden group-hover:block cursor-pointer"
+                            />
+                          </>
+                        )}
+                      </div>
+
+                      {/* Album thumbnail */}
+                      <div className="relative size-8 rounded-sm overflow-hidden shrink-0 bg-[#282828]">
                         <Image
                           src={song.image || "/images/project-icon.webp"}
                           alt={song.title}
@@ -771,48 +730,60 @@ export function MusicPlayer() {
                           unoptimized
                         />
                       </div>
+
+                      {/* Song Title & Artist */}
                       <div
-                        className="flex-1 min-w-0 cursor-pointer"
+                        className="flex-1 min-w-0"
                         onClick={() => loadGenrePlaylist(currentGenre, i)}
                       >
                         <p
                           className={`text-xs font-semibold truncate ${
                             isThisPlaying
-                              ? "text-emerald-500"
-                              : "text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500"
-                          } transition-colors`}
+                              ? "text-[#1ED760]"
+                              : "text-white group-hover:underline"
+                          }`}
                         >
                           {song.title}
                         </p>
-                        <p className="text-[10px] text-neutral-500 truncate">
+                        <p className="text-[10px] text-[#B3B3B3] truncate">
                           {song.artist}
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-1 shrink-0">
-                        {isThisPlaying && (
-                          <div className="flex items-end gap-0.5 h-2.5 mr-1">
-                            <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:0ms]" />
-                            <span className="w-0.5 h-2/3 bg-emerald-500 rounded-full animate-bounce [animation-delay:150ms]" />
-                            <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:300ms]" />
-                          </div>
-                        )}
+                      {/* Actions: Heart + Queue + Duration */}
+                      <div className="flex items-center gap-2 shrink-0">
                         <button
                           type="button"
-                          onClick={() => addSongToQueue(song)}
-                          className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                          onClick={(e) => toggleLike(song.id, e)}
+                          className={`p-1 transition-colors cursor-pointer ${
+                            isSongLiked
+                              ? "text-[#1ED760]"
+                              : "text-[#B3B3B3] opacity-0 group-hover:opacity-100 hover:text-white"
+                          }`}
+                          title={isSongLiked ? "Liked" : "Like"}
+                        >
+                          <Heart
+                            className={`size-3.5 ${
+                              isSongLiked ? "fill-[#1ED760]" : ""
+                            }`}
+                          />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            addSongToQueue(song)
+                          }}
+                          className="p-1 text-[#B3B3B3] hover:text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                           title="Add to queue"
                         >
                           <Plus className="size-3.5" />
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => loadGenrePlaylist(currentGenre, i)}
-                          className="p-1 rounded text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer"
-                          title="Play now"
-                        >
-                          <Play className="size-3.5 fill-current" />
-                        </button>
+
+                        <span className="text-[10px] text-[#B3B3B3] font-mono">
+                          {formatTime(song.duration)}
+                        </span>
                       </div>
                     </div>
                   )
@@ -821,32 +792,32 @@ export function MusicPlayer() {
             </motion.div>
           )}
 
-          {/* TAB 3: LIVE SEARCH */}
+          {/* TAB 3: SPOTIFY SEARCH VIEW */}
           {activeTab === "search" && (
             <motion.div
               key="search"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
               className="flex flex-col flex-1 h-[270px] justify-between"
             >
-              {/* Search Input Field */}
+              {/* Spotify Search Pill Input */}
               <form onSubmit={handleSearchSubmit} className="flex gap-1.5 mb-2 shrink-0">
                 <div className="relative flex-1">
-                  <Search className="absolute left-2.5 top-2.5 size-3.5 text-neutral-400" />
+                  <Search className="absolute left-3 top-2.5 size-3.5 text-[#B3B3B3]" />
                   <input
                     type="text"
-                    placeholder="Search Punjabi songs or artists..."
+                    placeholder="What do you want to play?"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-emerald-500"
+                    className="w-full pl-9 pr-8 py-1.5 text-xs rounded-full bg-[#242424] hover:bg-[#2A2A2A] focus:bg-[#2A2A2A] border border-transparent focus:border-[#1ED760] text-white placeholder:text-[#727272] transition-colors focus:outline-none"
                   />
                   {searchQuery && (
                     <button
                       type="button"
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-2 top-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200"
+                      className="absolute right-2.5 top-2 text-[#B3B3B3] hover:text-white"
                     >
                       <X className="size-3.5" />
                     </button>
@@ -855,7 +826,7 @@ export function MusicPlayer() {
                 <button
                   type="submit"
                   disabled={isSearching || !searchQuery.trim()}
-                  className="px-3 py-1.5 bg-emerald-500 text-white rounded-xl text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1"
+                  className="px-3.5 py-1.5 bg-[#1ED760] text-black font-bold rounded-full text-xs hover:scale-105 active:scale-95 transition-all disabled:opacity-40 cursor-pointer flex items-center gap-1"
                 >
                   {isSearching ? (
                     <Loader2 className="size-3.5 animate-spin" />
@@ -865,8 +836,8 @@ export function MusicPlayer() {
                 </button>
               </form>
 
-              {/* Quick Preset Search Chips */}
-              <div className="flex items-center gap-1 pb-1.5 overflow-x-auto no-scrollbar shrink-0">
+              {/* Quick Artist Filter Pills */}
+              <div className="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar shrink-0">
                 {SEARCH_PRESETS.map((preset) => (
                   <button
                     key={preset}
@@ -875,7 +846,7 @@ export function MusicPlayer() {
                       setSearchQuery(preset)
                       executeSearch(preset)
                     }}
-                    className="px-2 py-0.5 rounded-full text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-emerald-500/10 hover:text-emerald-500 dark:hover:text-emerald-400 whitespace-nowrap transition-colors cursor-pointer"
+                    className="px-3 py-1 rounded-full text-[11px] font-medium bg-[#242424] text-[#B3B3B3] hover:text-white hover:bg-[#2A2A2A] whitespace-nowrap transition-colors cursor-pointer"
                   >
                     {preset}
                   </button>
@@ -883,71 +854,88 @@ export function MusicPlayer() {
               </div>
 
               {/* Search Results List */}
-              <div className="flex-1 overflow-y-auto space-y-1 pr-1 no-scrollbar">
+              <div className="flex-1 overflow-y-auto space-y-0.5 pr-1 no-scrollbar">
                 {searchResults.length > 0 ? (
-                  searchResults.map((song) => (
-                    <div
-                      key={song.id}
-                      className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors group"
-                    >
-                      <div className="relative size-9 rounded-lg overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-800">
-                        <Image
-                          src={song.image || "/images/project-icon.webp"}
-                          alt={song.title}
-                          fill
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
+                  searchResults.map((song) => {
+                    const isThisPlaying =
+                      isPlaying && currentTrack.id === song.id
+                    return (
                       <div
-                        className="flex-1 min-w-0 cursor-pointer"
-                        onClick={() => playSongDirectly(song)}
+                        key={song.id}
+                        className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md transition-colors group cursor-pointer ${
+                          isThisPlaying
+                            ? "bg-[#282828] text-[#1ED760]"
+                            : "hover:bg-[#242424] text-white"
+                        }`}
                       >
-                        <p className="text-xs font-semibold truncate text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors">
-                          {song.title}
-                        </p>
-                        <p className="text-[10px] text-neutral-500 truncate">
-                          {song.artist}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-1 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => addSongToQueue(song)}
-                          className="p-1 rounded-md text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
-                          title="Add to queue"
-                        >
-                          <Plus className="size-3.5" />
-                        </button>
-                        <button
-                          type="button"
+                        <div className="relative size-8 rounded-sm overflow-hidden shrink-0 bg-[#282828]">
+                          <Image
+                            src={song.image || "/images/project-icon.webp"}
+                            alt={song.title}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                        <div
+                          className="flex-1 min-w-0"
                           onClick={() => playSongDirectly(song)}
-                          className="p-1 rounded-md text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
-                          title="Play now"
                         >
-                          <Play className="size-3.5 fill-current" />
-                        </button>
+                          <p
+                            className={`text-xs font-semibold truncate ${
+                              isThisPlaying
+                                ? "text-[#1ED760]"
+                                : "text-white group-hover:underline"
+                            }`}
+                          >
+                            {song.title}
+                          </p>
+                          <p className="text-[10px] text-[#B3B3B3] truncate">
+                            {song.artist}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              addSongToQueue(song)
+                            }}
+                            className="p-1 text-[#B3B3B3] hover:text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                            title="Add to queue"
+                          >
+                            <Plus className="size-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => playSongDirectly(song)}
+                            className="p-1 text-white hover:text-[#1ED760] transition-colors cursor-pointer"
+                            title="Play"
+                          >
+                            <Play className="size-3.5 fill-current" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    )
+                  })
                 ) : isSearching ? (
-                  <div className="flex flex-col items-center justify-center h-32 text-neutral-400 text-xs">
-                    <Loader2 className="size-6 animate-spin text-emerald-500 mb-2" />
-                    <span>Searching JioSaavn catalogue...</span>
+                  <div className="flex flex-col items-center justify-center h-32 text-[#B3B3B3] text-xs">
+                    <Loader2 className="size-6 animate-spin text-[#1ED760] mb-2" />
+                    <span>Searching Spotify catalogue...</span>
                   </div>
                 ) : hasSearched ? (
-                  <div className="flex flex-col items-center justify-center h-32 text-neutral-400 text-xs text-center px-4">
-                    <Music className="size-6 text-neutral-400 mb-2" />
+                  <div className="flex flex-col items-center justify-center h-32 text-[#B3B3B3] text-xs text-center px-4">
+                    <Music className="size-6 text-[#727272] mb-2" />
                     <span>
                       No results found for &ldquo;{searchQuery}&rdquo;. Try another title or artist.
                     </span>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-32 text-neutral-400 text-xs text-center px-4">
-                    <Sparkles className="size-6 text-emerald-500 mb-2" />
+                  <div className="flex flex-col items-center justify-center h-32 text-[#B3B3B3] text-xs text-center px-4">
+                    <IconBrandSpotify className="size-8 text-[#1ED760] mb-2" />
                     <span>
-                      Search millions of tracks directly on JioSaavn or pick a top Punjabi artist above.
+                      Search millions of tracks or explore top Punjabi artists above.
                     </span>
                   </div>
                 )}
@@ -955,31 +943,31 @@ export function MusicPlayer() {
             </motion.div>
           )}
 
-          {/* TAB 4: QUEUE / UP NEXT */}
+          {/* TAB 4: SPOTIFY QUEUE VIEW */}
           {activeTab === "queue" && (
             <motion.div
               key="queue"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
               className="flex flex-col flex-1 h-[270px] justify-between"
             >
-              <div className="flex items-center justify-between pb-1.5 px-1 text-[11px] font-semibold text-neutral-500 shrink-0">
-                <span>Playlist Queue ({tracks.length} tracks)</span>
+              <div className="flex items-center justify-between pb-2 px-1 text-[11px] font-bold text-[#B3B3B3] shrink-0 border-b border-[#282828]">
+                <span>Queue ({tracks.length} songs)</span>
                 <button
                   type="button"
                   onClick={() => {
                     setTracks(DEFAULT_TRACKS)
                     setCurrentTrackIndex(0)
                   }}
-                  className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer"
+                  className="text-[10px] text-[#1ED760] hover:underline cursor-pointer"
                 >
-                  Reset to Default
+                  Clear Queue
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-1 pr-1 no-scrollbar">
+              <div className="flex-1 overflow-y-auto space-y-0.5 pt-1 pr-1 no-scrollbar">
                 {tracks.map((song, i) => {
                   const isCurrent = i === currentTrackIndex
                   return (
@@ -990,13 +978,13 @@ export function MusicPlayer() {
                         setIsPlaying(true)
                         setActiveTab("player")
                       }}
-                      className={`flex items-center gap-2.5 p-2 rounded-xl transition-colors cursor-pointer group ${
+                      className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md transition-colors cursor-pointer group ${
                         isCurrent
-                          ? "bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/20"
-                          : "hover:bg-neutral-100 dark:hover:bg-neutral-800/80"
+                          ? "bg-[#282828] text-[#1ED760]"
+                          : "hover:bg-[#242424] text-white"
                       }`}
                     >
-                      <div className="relative size-9 rounded-lg overflow-hidden shrink-0 bg-neutral-200 dark:bg-neutral-800">
+                      <div className="relative size-8 rounded-sm overflow-hidden shrink-0 bg-[#282828]">
                         <Image
                           src={song.image || "/images/project-icon.webp"}
                           alt={song.title}
@@ -1010,26 +998,26 @@ export function MusicPlayer() {
                         <p
                           className={`text-xs font-semibold truncate ${
                             isCurrent
-                              ? "text-emerald-600 dark:text-emerald-400"
-                              : "text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500"
+                              ? "text-[#1ED760]"
+                              : "text-white group-hover:underline"
                           }`}
                         >
                           {song.title}
                         </p>
-                        <p className="text-[10px] text-neutral-500 truncate">
+                        <p className="text-[10px] text-[#B3B3B3] truncate">
                           {song.artist}
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-1.5 shrink-0">
+                      <div className="flex items-center gap-2 shrink-0">
                         {isCurrent && isPlaying ? (
                           <div className="flex items-end gap-0.5 h-3 mr-1">
-                            <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:0ms]" />
-                            <span className="w-0.5 h-2/3 bg-emerald-500 rounded-full animate-bounce [animation-delay:150ms]" />
-                            <span className="w-0.5 h-full bg-emerald-500 rounded-full animate-bounce [animation-delay:300ms]" />
+                            <span className="w-0.5 h-full bg-[#1ED760] rounded-full animate-bounce [animation-delay:0ms]" />
+                            <span className="w-0.5 h-2/3 bg-[#1ED760] rounded-full animate-bounce [animation-delay:150ms]" />
+                            <span className="w-0.5 h-full bg-[#1ED760] rounded-full animate-bounce [animation-delay:300ms]" />
                           </div>
                         ) : (
-                          <span className="text-[10px] text-neutral-400 font-mono">
+                          <span className="text-[10px] text-[#B3B3B3] font-mono">
                             {formatTime(song.duration)}
                           </span>
                         )}
@@ -1038,7 +1026,7 @@ export function MusicPlayer() {
                           <button
                             type="button"
                             onClick={(e) => removeSongFromQueue(i, e)}
-                            className="p-1 rounded text-neutral-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
+                            className="p-1 text-[#727272] hover:text-[#e91429] opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                             title="Remove from queue"
                           >
                             <Trash2 className="size-3" />
@@ -1054,24 +1042,24 @@ export function MusicPlayer() {
         </AnimatePresence>
       </div>
 
-      {/* Docked Mini-Player Bar (Visible when browsing Genres, Search, or Queue) */}
+      {/* Docked Spotify Bottom Player Bar (Shown when browsing Playlists, Search, or Queue) */}
       {activeTab !== "player" && (
-        <div className="relative mt-2 pt-2 border-t border-neutral-200/70 dark:border-neutral-800/70 shrink-0">
-          {/* Continuous Progress Indicator Line */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-neutral-200 dark:bg-neutral-800">
+        <div className="relative mt-2 pt-2 border-t border-[#282828] shrink-0">
+          {/* Continuous Spotify Green Progress Line */}
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#4D4D4D]">
             <div
-              className="h-full bg-emerald-500 transition-all duration-300"
+              className="h-full bg-[#1ED760] transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
 
-          <div className="flex items-center justify-between gap-2 p-1.5 rounded-xl bg-neutral-100/90 dark:bg-neutral-900/90 border border-neutral-200/50 dark:border-neutral-800/50">
+          <div className="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-[#181818] border border-[#282828]">
             {/* Click to expand Now Playing */}
             <div
               onClick={() => setActiveTab("player")}
               className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group"
             >
-              <div className="relative size-8 rounded-lg overflow-hidden shrink-0">
+              <div className="relative size-8 rounded-sm overflow-hidden shrink-0 bg-[#282828]">
                 <Image
                   src={currentTrack.image || "/images/project-icon.webp"}
                   alt={currentTrack.title}
@@ -1081,53 +1069,66 @@ export function MusicPlayer() {
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold truncate text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors">
+                <p className="text-xs font-semibold truncate text-white group-hover:underline">
                   {currentTrack.title}
                 </p>
-                <p className="text-[10px] text-neutral-500 truncate">
+                <p className="text-[10px] text-[#B3B3B3] truncate">
                   {currentTrack.artist}
                 </p>
               </div>
             </div>
 
-            {/* Quick Playback Transport in Docked Bar */}
-            <div className="flex items-center gap-1 shrink-0">
+            {/* Quick Transport in Spotify Mini Player */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={(e) => toggleLike(currentTrack.id, e)}
+                className="p-1 text-[#B3B3B3] hover:text-white transition-colors cursor-pointer mr-0.5"
+                title={isCurrentLiked ? "Liked" : "Like"}
+              >
+                <Heart
+                  className={`size-3.5 ${
+                    isCurrentLiked ? "fill-[#1ED760] text-[#1ED760]" : ""
+                  }`}
+                />
+              </button>
+
               <button
                 type="button"
                 onClick={handlePrev}
-                className="p-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
-                title="Previous track"
+                className="p-1 text-[#B3B3B3] hover:text-white transition-colors cursor-pointer"
+                title="Previous"
               >
-                <SkipBack className="size-3.5" />
+                <SkipBack className="size-3.5 fill-current" />
               </button>
 
               <button
                 type="button"
                 onClick={togglePlay}
-                className="p-1.5 rounded-full bg-emerald-500 text-white shadow-xs hover:bg-emerald-600 transition-colors cursor-pointer"
+                className="p-1.5 rounded-full bg-white text-black hover:scale-105 active:scale-95 transition-transform cursor-pointer"
                 title={isPlaying ? "Pause" : "Play"}
               >
                 {isPlaying ? (
-                  <Pause className="size-3 fill-white" />
+                  <Pause className="size-3 fill-black" />
                 ) : (
-                  <Play className="size-3 fill-white translate-x-0.2" />
+                  <Play className="size-3 fill-black translate-x-0.2" />
                 )}
               </button>
 
               <button
                 type="button"
                 onClick={handleNext}
-                className="p-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
-                title="Next track"
+                className="p-1 text-[#B3B3B3] hover:text-white transition-colors cursor-pointer"
+                title="Next"
               >
-                <SkipForward className="size-3.5" />
+                <SkipForward className="size-3.5 fill-current" />
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab("player")}
-                className="p-1 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors ml-0.5 cursor-pointer"
-                title="Open Full Player"
+                className="p-1 text-[#727272] hover:text-white transition-colors ml-1 cursor-pointer"
+                title="Expand Now Playing"
               >
                 <Maximize2 className="size-3" />
               </button>
