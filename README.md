@@ -220,7 +220,7 @@ npm run build
 | **Job Mail Automation** | Node.js, OpenRouter LLM, Gmail SMTP, JavaScript | Automation Tool | [Demo](https://autosend-kappa.vercel.app/) • [GitHub](https://github.com/Jashan-randhawa/Job-mail-Automation) |
 | **Library Management System** | React, TypeScript, Express, MongoDB | Management System | [Demo](https://library-managment-system-ochre.vercel.app) • [GitHub](https://github.com/Jashan-randhawa/Library_Managment_System) |
 | **Hospital Management System** | C++ HTTP Server, HTML5, CSS3, JavaScript | Web & Systems | [Demo](https://hospital-managment-kappa.vercel.app) • [GitHub](https://github.com/Jashan-randhawa/Hospital_Managment) |
-| **Bus Reservation System** | PHP, MySQL, Tailwind CSS, Auth0 | Booking System | [Demo](https://busrevervation.gamer.gd/Homepage.php) • [GitHub](https://github.com/Jashan-randhawa/Bus-Resrvation) |
+| **Bus Reservation System** | PHP, MySQL, Tailwind CSS, Auth0 | Booking System | [Demo](https://bus-resrvation.onrender.com) • [GitHub](https://github.com/Jashan-randhawa/Bus-Resrvation) |
 | **Shopify Clone** | React, JavaScript, DummyJSON API | E-Commerce | [Demo](https://shopify-clone-rust.vercel.app) • [GitHub](https://github.com/Jashan-randhawa/Shopify-Clone) |
 | **Ochi Design Agency** | React, Framer Motion, Tailwind CSS | Animated Web | [Demo](https://ochi-animation.vercel.app) • [GitHub](https://github.com/Jashan-randhawa/OCHI-ANIMATION) |
 | **TalentArch** | React, Node.js, Express | Event Management | [Demo](https://remotejob-omega.vercel.app) • [GitHub](https://github.com/Jashan-randhawa/task) |

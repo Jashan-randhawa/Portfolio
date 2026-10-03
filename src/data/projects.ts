@@ -84,7 +84,7 @@ export const PROJECTS = [
     src: "/images/mockup/hivello_mockup.png",
     techStack: ["PHP", "MySQL", "TailwindCSS", "HTML", "JavaScript", "Auth0"],
     githubLink: "https://github.com/Jashan-randhawa/Bus-Resrvation",
-    liveLink: "https://busrevervation.gamer.gd/Homepage.php",
+    liveLink: "https://bus-resrvation.onrender.com",
     description:
       "A full-featured bus reservation system with secure authentication, seat selection, and booking management.",
   },
